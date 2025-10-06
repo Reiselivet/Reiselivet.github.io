@@ -134,6 +134,20 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
     }
+
+    .delete-btn {
+      background-color: #ff4c4c;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .delete-btn:hover {
+      background-color: #e60000;
+    }
   </style>
 </head>
 <body>
@@ -173,6 +187,7 @@
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Handling</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -189,6 +204,7 @@
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Handling</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -197,81 +213,89 @@
   </div>
 
   <script>
-    const form = document.getElementById('subscriptionForm');
-    const activeTableBody = document.querySelector('#activeTable tbody');
-    const expiredTableBody = document.querySelector('#expiredTable tbody');
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById('subscriptionForm');
+      const activeTableBody = document.querySelector('#activeTable tbody');
+      const expiredTableBody = document.querySelector('#expiredTable tbody');
 
-    // Lager en tilfeldig kode til abonnement
-    function generateCode() {
-      return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-    }
-
-    // Henter lagrede abonnementer fra Local Storage
-    function getFromLocalStorage() {
-      const data = localStorage.getItem('subscriptions');
-      return data ? JSON.parse(data) : [];
-    }
-
-    // Lagrer alle abonnementer
-    function saveToLocalStorage(data) {
-      localStorage.setItem('subscriptions', JSON.stringify(data));
-    }
-
-    // Viser alle abonnementer i tabellene
-    function renderTables() {
-      const data = getFromLocalStorage();
-      const today = new Date().toISOString().split('T')[0];
-
-      // Tøm tabellene før vi fyller inn på nytt
-      activeTableBody.innerHTML = '';
-      expiredTableBody.innerHTML = '';
-
-      data.forEach(sub => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${sub.name}</td>
-          <td>${sub.phone}</td>
-          <td>${sub.start}</td>
-          <td>${sub.code}</td>
-          <td>${sub.expiry}</td>
-        `;
-
-        if (sub.expiry < today) {
-          row.classList.add('expired');
-          expiredTableBody.appendChild(row);
-        } else {
-          activeTableBody.appendChild(row);
-        }
-      });
-    }
-
-    // Når man sender inn skjemaet
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const newSub = {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        start: document.getElementById('start').value,
-        expiry: document.getElementById('expiry').value,
-        code: generateCode()
-      };
-
-      if (!newSub.name || !newSub.phone || !newSub.start || !newSub.expiry) {
-        alert('Vennligst fyll ut alle felter.');
-        return;
+      function generateCode() {
+        return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
       }
 
-      const data = getFromLocalStorage();
-      data.push(newSub);
-      saveToLocalStorage(data);
+      function getFromLocalStorage() {
+        return JSON.parse(localStorage.getItem('subscriptions')) || [];
+      }
+
+      function saveToLocalStorage(data) {
+        localStorage.setItem('subscriptions', JSON.stringify(data));
+      }
+
+      function deleteSubscription(code) {
+        let data = getFromLocalStorage();
+        data = data.filter(sub => sub.code !== code);
+        saveToLocalStorage(data);
+        renderTables();
+      }
+
+      function renderTables() {
+        activeTableBody.innerHTML = '';
+        expiredTableBody.innerHTML = '';
+
+        const data = getFromLocalStorage();
+        const today = new Date().toISOString().split('T')[0];
+
+        data.forEach(sub => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${sub.name}</td>
+            <td>${sub.phone}</td>
+            <td>${sub.start}</td>
+            <td>${sub.code}</td>
+            <td>${sub.expiry}</td>
+            <td><button class="delete-btn" data-code="${sub.code}">Slett</button></td>
+          `;
+
+          if (sub.expiry < today) {
+            row.classList.add('expired');
+            expiredTableBody.appendChild(row);
+          } else {
+            activeTableBody.appendChild(row);
+          }
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', e => {
+            const code = e.target.getAttribute('data-code');
+            deleteSubscription(code);
+          });
+        });
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const newSub = {
+          name: document.getElementById('name').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          start: document.getElementById('start').value,
+          expiry: document.getElementById('expiry').value,
+          code: generateCode()
+        };
+
+        if (!newSub.name || !newSub.phone || !newSub.start || !newSub.expiry) {
+          alert('Vennligst fyll ut alle felter.');
+          return;
+        }
+
+        const data = getFromLocalStorage();
+        data.push(newSub);
+        saveToLocalStorage(data);
+        renderTables();
+        form.reset();
+      });
 
       renderTables();
-      form.reset();
     });
-
-    // Last inn lagrede abonnementer når siden åpnes
-    window.addEventListener('load', renderTables);
   </script>
 
 </body>
