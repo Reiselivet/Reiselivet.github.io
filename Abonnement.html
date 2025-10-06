@@ -140,7 +140,7 @@
 
   <nav>
     <a href="https://reiselivet.github.io">Hjem</a>
-    <a href="report.html">Report</a>
+    <a href="https://reiselivet.github.io/Report.html">Report</a>
     <a href="abonnement.html">Abonnement</a>
   </nav>
 
@@ -201,28 +201,33 @@
     const activeTableBody = document.querySelector('#activeTable tbody');
     const expiredTableBody = document.querySelector('#expiredTable tbody');
 
+    // Lager en tilfeldig kode til abonnement
     function generateCode() {
       return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
     }
 
+    // Henter lagrede abonnementer fra Local Storage
+    function getFromLocalStorage() {
+      const data = localStorage.getItem('subscriptions');
+      return data ? JSON.parse(data) : [];
+    }
+
+    // Lagrer alle abonnementer
     function saveToLocalStorage(data) {
       localStorage.setItem('subscriptions', JSON.stringify(data));
     }
 
-    function getFromLocalStorage() {
-      return JSON.parse(localStorage.getItem('subscriptions')) || [];
-    }
-
+    // Viser alle abonnementer i tabellene
     function renderTables() {
-      activeTableBody.innerHTML = '';
-      expiredTableBody.innerHTML = '';
-
       const data = getFromLocalStorage();
       const today = new Date().toISOString().split('T')[0];
 
+      // Tøm tabellene før vi fyller inn på nytt
+      activeTableBody.innerHTML = '';
+      expiredTableBody.innerHTML = '';
+
       data.forEach(sub => {
         const row = document.createElement('tr');
-        row.setAttribute('data-expiry', sub.expiry);
         row.innerHTML = `
           <td>${sub.name}</td>
           <td>${sub.phone}</td>
@@ -240,7 +245,8 @@
       });
     }
 
-    form.addEventListener('submit', function(e) {
+    // Når man sender inn skjemaet
+    form.addEventListener('submit', e => {
       e.preventDefault();
 
       const newSub = {
@@ -251,13 +257,20 @@
         code: generateCode()
       };
 
+      if (!newSub.name || !newSub.phone || !newSub.start || !newSub.expiry) {
+        alert('Vennligst fyll ut alle felter.');
+        return;
+      }
+
       const data = getFromLocalStorage();
       data.push(newSub);
       saveToLocalStorage(data);
+
       renderTables();
       form.reset();
     });
 
+    // Last inn lagrede abonnementer når siden åpnes
     window.addEventListener('load', renderTables);
   </script>
 
