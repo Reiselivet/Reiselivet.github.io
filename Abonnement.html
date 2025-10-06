@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Abonnementsoversikt</title>
+  <style>
+    :root {
+      --bg: #1e1e1e;
+      --card: #2a2a2a;
+      --text: #ffffff;
+      --accent: #00d0ff;
+      --expired: #ff4c4c;
+      --font: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1, h2 {
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    form {
+      background-color: var(--card);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 5px;
+      background-color: #444;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--accent);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00b8e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      background-color: #333;
+      text-align: left;
+    }
+
+    tr.expired {
+      background-color: #3a1c1c;
+      color: var(--expired);
+    }
+
+    .section {
+      background-color: var(--card);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Abonnementsoversikt</h1>
+
+    <form id="subscriptionForm">
+      <label>Navn:
+        <input type="text" id="name" required>
+      </label>
+      <label>Telefon:
+        <input type="tel" id="phone" required>
+      </label>
+      <label>Startdato:
+        <input type="date" id="start" required>
+      </label>
+      <label>Utløpsdato:
+        <input type="date" id="expiry" required>
+      </label>
+      <button type="submit">Legg til abonnement</button>
+    </form>
+
+    <div class="section">
+      <h2>🟢 Aktive abonnementer</h2>
+      <table id="activeTable">
+        <thead>
+          <tr>
+            <th>Navn</th>
+            <th>Telefon</th>
+            <th>Startdato</th>
+            <th>Kode</th>
+            <th>Utløpsdato</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>🔴 Utløpte abonnementer</h2>
+      <table id="expiredTable">
+        <thead>
+          <tr>
+            <th>Navn</th>
+            <th>Telefon</th>
+            <th>Startdato</th>
+            <th>Kode</th>
+            <th>Utløpsdato</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('subscriptionForm');
+    const activeTableBody = document.getElementById('activeTable').querySelector('tbody');
+    const expiredTableBody = document.getElementById('expiredTable').querySelector('tbody');
+
+    function generateCode() {
+      return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    }
+
+    function checkExpiredSubscriptions() {
+      const today = new Date().toISOString().split('T')[0];
+      const rows = Array.from(activeTableBody.querySelectorAll('tr'));
+
+      rows.forEach(row => {
+        const expiry = row.getAttribute('data-expiry');
+        if (expiry < today) {
+          expiredTableBody.appendChild(row);
+          row.classList.add('expired');
+        }
+      });
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const start = document.getElementById('start').value;
+      const expiry = document.getElementById('expiry').value;
+      const code = generateCode();
+
+      const row = document.createElement('tr');
+      row.setAttribute('data-expiry', expiry);
+
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${phone}</td>
+        <td>${start}</td>
+        <td>${code}</td>
+        <td>${expiry}</td>
+      `;
+
+      activeTableBody.appendChild(row);
+      form.reset();
+
+      checkExpiredSubscriptions();
+    });
+
+    checkExpiredSubscriptions();
+  </script>
+
+</body>
+</html>
