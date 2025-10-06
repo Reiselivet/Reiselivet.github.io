@@ -2,14 +2,14 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8">
-  <title>Abonnementsoversikt</title>
+  <title>Abonnementsoversikt | Reiselivet</title>
   <style>
     :root {
-      --bg: #1e1e1e;
-      --card: #2a2a2a;
-      --text: #ffffff;
-      --accent: #00d0ff;
-      --expired: #ff4c4c;
+      --bg: #ffffff;
+      --text: #222;
+      --accent: #0078ff;
+      --card: rgba(255, 255, 255, 0.8);
+      --expired: #c0392b;
       --font: 'Segoe UI', sans-serif;
     }
 
@@ -18,30 +18,79 @@
       color: var(--text);
       font-family: var(--font);
       margin: 0;
-      padding: 30px;
+      padding: 0;
+    }
+
+    /* === MENY === */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.3);
+      padding: 10px 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 25px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .menu a:hover {
+      color: var(--accent);
+    }
+
+    /* === INNHOLD === */
+    .container {
+      max-width: 900px;
+      margin: 120px auto 60px auto;
+      padding: 0 20px;
     }
 
     h1, h2 {
       color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+      margin-bottom: 15px;
     }
 
     form {
       background-color: var(--card);
-      padding: 20px;
-      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      padding: 25px;
+      border-radius: 15px;
       margin-bottom: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     }
 
     label {
       display: block;
       margin-top: 15px;
+      font-weight: 500;
     }
 
     input[type="text"],
@@ -50,60 +99,76 @@
       width: 100%;
       max-width: 400px;
       padding: 10px;
-      border: none;
-      border-radius: 5px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       margin-top: 5px;
-      background-color: #444;
-      color: #fff;
+      background-color: #f8f8f8;
+      color: #333;
     }
 
     button {
       margin-top: 20px;
       padding: 12px 25px;
       border: none;
-      border-radius: 5px;
-      background-color: var(--accent);
-      color: #000;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #00b8ff);
+      color: white;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
 
     button:hover {
-      background-color: #00b8e0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: var(--card);
     }
 
     th, td {
       padding: 12px;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid #ddd;
     }
 
     th {
-      background-color: #333;
+      background-color: #f5f5f5;
       text-align: left;
     }
 
     tr.expired {
-      background-color: #3a1c1c;
+      background-color: #fdecea;
       color: var(--expired);
     }
 
     .section {
       background-color: var(--card);
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 15px;
       margin-bottom: 40px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     }
   </style>
 </head>
 <body>
+
+  <nav>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Globe_icon.svg" alt="Reiselivet logo">
+      Reiselivet
+    </div>
+    <div class="menu">
+      <a href="README.md">Hjem</a>
+      <a href="Report.html">Report</a>
+      <a href="Abonnement.html">Abonnement</a>
+    </div>
+  </nav>
 
   <div class="container">
     <h1>Abonnementsoversikt</h1>
@@ -159,11 +224,51 @@
 
   <script>
     const form = document.getElementById('subscriptionForm');
-    const activeTableBody = document.getElementById('activeTable').querySelector('tbody');
-    const expiredTableBody = document.getElementById('expiredTable').querySelector('tbody');
+    const activeTableBody = document.querySelector('#activeTable tbody');
+    const expiredTableBody = document.querySelector('#expiredTable tbody');
 
     function generateCode() {
       return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    }
+
+    function saveSubscriptions() {
+      const active = Array.from(activeTableBody.querySelectorAll('tr')).map(row => ({
+        name: row.children[0].textContent,
+        phone: row.children[1].textContent,
+        start: row.children[2].textContent,
+        code: row.children[3].textContent,
+        expiry: row.children[4].textContent
+      }));
+      const expired = Array.from(expiredTableBody.querySelectorAll('tr')).map(row => ({
+        name: row.children[0].textContent,
+        phone: row.children[1].textContent,
+        start: row.children[2].textContent,
+        code: row.children[3].textContent,
+        expiry: row.children[4].textContent
+      }));
+      localStorage.setItem('subscriptions', JSON.stringify({ active, expired }));
+    }
+
+    function loadSubscriptions() {
+      const data = JSON.parse(localStorage.getItem('subscriptions'));
+      if (!data) return;
+
+      data.active.forEach(sub => addRow(sub, activeTableBody));
+      data.expired.forEach(sub => addRow(sub, expiredTableBody, true));
+    }
+
+    function addRow(sub, tableBody, expired = false) {
+      const row = document.createElement('tr');
+      if (expired) row.classList.add('expired');
+      row.setAttribute('data-expiry', sub.expiry);
+      row.innerHTML = `
+        <td>${sub.name}</td>
+        <td>${sub.phone}</td>
+        <td>${sub.start}</td>
+        <td>${sub.code}</td>
+        <td>${sub.expiry}</td>
+      `;
+      tableBody.appendChild(row);
     }
 
     function checkExpiredSubscriptions() {
@@ -173,40 +278,32 @@
       rows.forEach(row => {
         const expiry = row.getAttribute('data-expiry');
         if (expiry < today) {
-          expiredTableBody.appendChild(row);
           row.classList.add('expired');
+          expiredTableBody.appendChild(row);
         }
       });
+      saveSubscriptions();
     }
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', e => {
       e.preventDefault();
 
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const start = document.getElementById('start').value;
-      const expiry = document.getElementById('expiry').value;
-      const code = generateCode();
+      const sub = {
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        start: document.getElementById('start').value,
+        expiry: document.getElementById('expiry').value,
+        code: generateCode()
+      };
 
-      const row = document.createElement('tr');
-      row.setAttribute('data-expiry', expiry);
-
-      row.innerHTML = `
-        <td>${name}</td>
-        <td>${phone}</td>
-        <td>${start}</td>
-        <td>${code}</td>
-        <td>${expiry}</td>
-      `;
-
-      activeTableBody.appendChild(row);
+      addRow(sub, activeTableBody);
+      saveSubscriptions();
       form.reset();
-
       checkExpiredSubscriptions();
     });
 
+    loadSubscriptions();
     checkExpiredSubscriptions();
   </script>
-
 </body>
 </html>
