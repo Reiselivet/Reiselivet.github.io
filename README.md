@@ -13,22 +13,18 @@ body {
   background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
 }
 
-/* Gjennomsiktig navigasjonsmeny */
+/* Navigasjonsmeny */
 nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  background-color: #0A1F44;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 30px;
-  padding: 20px 40px;
-  background: transparent;
-  z-index: 10;
+  padding: 15px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 nav a {
-  color: white;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
@@ -40,11 +36,11 @@ nav a:hover {
   transform: translateY(-2px);
 }
 
-/* Header-bilde med overlay tekst */
+/* Header-bilde som boks med tekst-overlay */
 .header-box {
     max-width: 900px;
     height: 400px;
-    margin: 80px auto 50px; /* gir litt plass under menyen */
+    margin: 50px auto;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -104,19 +100,19 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
     .boxes { flex-direction: column; }
     .header-box { height: 300px; }
     .header-box .overlay-text { font-size: 2rem; }
-    nav { justify-content: center; padding: 15px; gap: 20px; }
+    nav { flex-direction: column; gap: 10px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Gjennomsiktig meny -->
+<!-- Navigasjonsmeny -->
 <nav>
   <a href="Report.html">Report</a>
   <a href="Abonnement.html">Abonnement</a>
 </nav>
 
-<!-- Header-bilde -->
+<!-- Header-bilde som boks med overlay tekst -->
 <div class="header-box">
     <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
     <div class="overlay-text">Reiselivet</div>
