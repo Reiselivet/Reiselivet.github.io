@@ -127,7 +127,7 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
         </div>
         <div class="box">
             <h3>Pris ved utreise</h3>
-            <p>15.500 kr per person. Tillegg på 10.000 kr per hode for ekstra tjenester. Vi gir full oversikt før reisen starter.</p>
+            <p>15.500,- kr per person. Tillegg på 10.000 kr per hode for ekstra tjenester. Vi gir full oversikt før reisen starter.</p>
         </div>
         <div class="box">
             <h3>Reisen</h3>
