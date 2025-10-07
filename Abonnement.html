@@ -5,10 +5,10 @@
   <title>Abonnementsoversikt</title>
   <style>
     :root {
-      --bg: #000; /* helsvart bakgrunn */
-      --card: #141414;
-      --text: #f0f0f0;
-      --accent: #00b8ff;
+      --bg: #ffffff;
+      --card: #f5f5f5;
+      --text: #111;
+      --accent: #0078ff;
       --expired: #ff4c4c;
       --font: 'Segoe UI', sans-serif;
     }
@@ -18,22 +18,22 @@
       color: var(--text);
       font-family: var(--font);
       margin: 0;
-      padding: 80px 30px 30px 30px;
+      padding: 100px 30px 30px 30px;
     }
 
-    /* --- Elegant meny øverst --- */
+    /* --- Meny øverst --- */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: center;  /* sentrert */
       gap: 40px;
       padding: 18px 0;
-      background: rgba(20, 20, 20, 0.8);
+      background: rgba(255,255,255,0.9);
       backdrop-filter: blur(6px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
       z-index: 1000;
     }
 
@@ -41,15 +41,14 @@
       color: var(--accent);
       text-decoration: none;
       font-weight: 600;
-      letter-spacing: 0.5px;
       padding: 8px 15px;
       border-radius: 8px;
       transition: background 0.3s, color 0.3s;
     }
 
     nav a:hover {
-      background: rgba(0, 184, 255, 0.15);
-      color: #fff;
+      background: rgba(0,120,255,0.1);
+      color: #0050aa;
     }
 
     h1, h2 {
@@ -67,8 +66,8 @@
       padding: 25px;
       border-radius: 12px;
       margin-bottom: 30px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     label {
@@ -83,17 +82,17 @@
       width: 100%;
       max-width: 400px;
       padding: 10px;
-      border: none;
+      border: 1px solid #ccc;
       border-radius: 5px;
       margin-top: 5px;
-      background-color: #2b2b2b;
-      color: #fff;
+      background-color: #fff;
+      color: #000;
       outline: none;
-      transition: background 0.3s;
+      transition: border-color 0.3s;
     }
 
     input:focus {
-      background-color: #333;
+      border-color: var(--accent);
     }
 
     button {
@@ -102,14 +101,14 @@
       border: none;
       border-radius: 8px;
       background-color: var(--accent);
-      color: #000;
+      color: #fff;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: background 0.3s, transform 0.2s;
     }
 
     button:hover {
-      background-color: #00a2e0;
+      background-color: #0050aa;
       transform: translateY(-2px);
     }
 
@@ -121,17 +120,17 @@
 
     th, td {
       padding: 12px;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid #ccc;
     }
 
     th {
-      background-color: #111;
+      background-color: #eaeaea;
       text-align: left;
-      color: var(--accent);
+      color: #000;
     }
 
     tr.expired {
-      background-color: #2a1212;
+      background-color: #ffe8e8;
       color: var(--expired);
     }
 
@@ -140,11 +139,10 @@
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 40px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
-    /* Responsivt */
     @media(max-width: 700px) {
       nav { gap: 20px; font-size: 0.9rem; }
       form, .section { padding: 15px; }
@@ -165,16 +163,16 @@
 
     <form id="subscriptionForm">
       <label>Navn:
-        <input type="text" id="name" required>
+        <input type="text" id="name" name="name" required>
       </label>
       <label>Telefon:
-        <input type="tel" id="phone" required>
+        <input type="tel" id="phone" name="phone" required>
       </label>
       <label>Startdato:
-        <input type="date" id="start" required>
+        <input type="date" id="start" name="start" required>
       </label>
       <label>Utløpsdato:
-        <input type="date" id="expiry" required>
+        <input type="date" id="expiry" name="expiry" required>
       </label>
       <button type="submit">Legg til abonnement</button>
     </form>
@@ -212,78 +210,71 @@
     </div>
   </div>
 
-  <script>
-    // Firebase regler (for referanse):
-    // {
-    //   "rules": {
-    //     ".read": "now < 1762383600000",
-    //     ".write": "now < 1762383600000"
-    //   }
-    // }
+  <!-- Firebase og logikk -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-    // --- Firebase Config og Initialisering ---
-    // (Erstatt med ditt eget prosjekt-ID og API-nøkler hvis du har)
     const firebaseConfig = {
-      apiKey: "DIN_API_KEY_HER",
-      authDomain: "dittprosjekt.firebaseapp.com",
-      databaseURL: "https://dittprosjekt.firebaseio.com",
-      projectId: "dittprosjekt",
-      storageBucket: "dittprosjekt.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:abcdef123456"
+      apiKey: "AIzaSyDj3E3reCspPozBwmB8SpvHbSssl9pglMA",
+      authDomain: "reiselivet-8c87d.firebaseapp.com",
+      databaseURL: "https://reiselivet-8c87d-default-rtdb.firebaseio.com",
+      projectId: "reiselivet-8c87d",
+      storageBucket: "reiselivet-8c87d.firebasestorage.app",
+      messagingSenderId: "801018232313",
+      appId: "1:801018232313:web:fbf3efb6d9e6f0418b5128",
+      measurementId: "G-JTBGXVGWR3"
     };
 
-    // Initialiser Firebase
-    import("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js").then(({ initializeApp }) => {
-      const app = initializeApp(firebaseConfig);
-      console.log("Firebase tilkoblet:", app.name);
-    });
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     const form = document.getElementById('subscriptionForm');
-    const activeTableBody = document.getElementById('activeTable').querySelector('tbody');
-    const expiredTableBody = document.getElementById('expiredTable').querySelector('tbody');
+    const activeTableBody = document.querySelector('#activeTable tbody');
+    const expiredTableBody = document.querySelector('#expiredTable tbody');
 
     function generateCode() {
-      return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+      return 'SUB-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    function checkExpiredSubscriptions() {
-      const today = new Date().toISOString().split('T')[0];
-      const rows = Array.from(activeTableBody.querySelectorAll('tr'));
-      rows.forEach(row => {
-        const expiry = row.getAttribute('data-expiry');
-        if (expiry < today) {
-          expiredTableBody.appendChild(row);
-          row.classList.add('expired');
-        }
-      });
-    }
-
-    form.addEventListener('submit', function(e) {
+    // Legg til nytt abonnement i databasen
+    form.addEventListener('submit', e => {
       e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const start = document.getElementById('start').value;
-      const expiry = document.getElementById('expiry').value;
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const start = form.start.value;
+      const expiry = form.expiry.value;
       const code = generateCode();
 
-      const row = document.createElement('tr');
-      row.setAttribute('data-expiry', expiry);
-      row.innerHTML = `
-        <td>${name}</td>
-        <td>${phone}</td>
-        <td>${start}</td>
-        <td>${code}</td>
-        <td>${expiry}</td>
-      `;
-
-      activeTableBody.appendChild(row);
+      push(ref(db, 'subscriptions'), { name, phone, start, expiry, code });
       form.reset();
-      checkExpiredSubscriptions();
     });
 
-    checkExpiredSubscriptions();
+    // Hent og vis alle abonnementer
+    onValue(ref(db, 'subscriptions'), snapshot => {
+      activeTableBody.innerHTML = '';
+      expiredTableBody.innerHTML = '';
+      const today = new Date().toISOString().split('T')[0];
+
+      snapshot.forEach(child => {
+        const s = child.val();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${s.name}</td>
+          <td>${s.phone}</td>
+          <td>${s.start}</td>
+          <td>${s.code}</td>
+          <td>${s.expiry}</td>`;
+
+        if (s.expiry < today) {
+          row.classList.add('expired');
+          expiredTableBody.appendChild(row);
+        } else {
+          activeTableBody.appendChild(row);
+        }
+      });
+    });
   </script>
+
 </body>
 </html>
