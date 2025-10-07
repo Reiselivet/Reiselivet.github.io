@@ -21,7 +21,6 @@
       padding: 100px 30px 30px 30px;
     }
 
-    /* Meny øverst */
     nav {
       position: fixed;
       top: 0;
@@ -189,7 +188,6 @@
 </head>
 <body>
 
-  <!-- Navigasjonsmeny -->
   <nav>
     <a href="https://reiselivet.github.io/">Hjem</a>
     <a href="https://reiselivet.github.io/Report.html">Report</a>
@@ -286,7 +284,6 @@
       return 'SUB-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    // Legg til nytt abonnement
     form.addEventListener('submit', e => {
       e.preventDefault();
       const userId = form.userId.value.trim();
@@ -301,7 +298,6 @@
       form.reset();
     });
 
-    // Vis abonnementer og håndter sletting og oppdatering
     onValue(ref(db, 'subscriptions'), snapshot => {
       activeTableBody.innerHTML = '';
       expiredTableBody.innerHTML = '';
@@ -326,7 +322,7 @@
           <td><button class="delete-btn" data-id="${id}">Slett</button></td>
         `;
 
-        if (s.expiry < today) {
+        if (s.expiry < today || s.stempel === 0) {
           row.classList.add('expired');
           expiredTableBody.appendChild(row);
         } else {
@@ -342,13 +338,25 @@
         });
       });
 
-      // Oppdater stempel
+      // Oppdater stempel og flytt til utløpte hvis stempel = 0
       document.querySelectorAll('.update-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
           const input = document.querySelector(`input.stempel-input[data-id="${id}"]`);
           const newStempel = Number(input.value);
-          update(ref(db, 'subscriptions/' + id), { stempel: newStempel });
+          const row = input.closest('tr');
+          const today = new Date().toISOString().split('T')[0];
+
+          update(ref(db, 'subscriptions/' + id), { stempel: newStempel })
+            .then(() => {
+              if (newStempel === 0) {
+                row.classList.add('expired');
+                expiredTableBody.appendChild(row);
+              } else if (row.classList.contains('expired') && newStempel > 0) {
+                row.classList.remove('expired');
+                activeTableBody.appendChild(row);
+              }
+            });
         });
       });
     });
