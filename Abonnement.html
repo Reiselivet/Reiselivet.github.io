@@ -330,21 +330,27 @@
         }
       });
 
-      // Slett abonnement
+      // Slett abonnement med kode
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
-          remove(ref(db, 'subscriptions/' + id));
+          const inputCode = prompt("Oppgi kode for å slette abonnementet:");
+          if (inputCode === 'A2i4kz123') {
+            remove(ref(db, 'subscriptions/' + id))
+              .then(() => alert('Abonnement slettet!'))
+              .catch(err => alert('Feil ved sletting: ' + err.message));
+          } else {
+            alert('Feil kode! Abonnementet ble ikke slettet.');
+          }
         });
       });
 
-      // Oppdater stempel (ingen manuell flytting)
+      // Oppdater stempel
       document.querySelectorAll('.update-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
           const input = document.querySelector(`input.stempel-input[data-id="${id}"]`);
           const newStempel = Number(input.value);
-
           update(ref(db, 'subscriptions/' + id), { stempel: newStempel });
         });
       });
