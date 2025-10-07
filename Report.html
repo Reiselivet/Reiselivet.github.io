@@ -197,7 +197,7 @@ th {
         <th>Ny tid</th>
         <th>Antall</th>
         <th>Status</th>
-        <th>Slett</th>
+        <th></th> <!-- For slett-knapp -->
       </tr>
     </thead>
     <tbody></tbody>
@@ -238,7 +238,7 @@ function renderTable() {
       <td>${r.newTime || "-"}</td>
       <td>${r.persons}</td>
       <td><span class="status ${r.status}">${r.status}</span></td>
-      <td><span class="delete-btn">Slett</span></td>
+      <td><button class="delete-btn">×</button></td>
     `;
     tbody.appendChild(tr);
 
@@ -273,4 +273,33 @@ function cycleStatus(key) {
 
 // Modal for ny hentetid
 document.getElementById("saveTimeBtn").onclick = () => {
-  const newTime
+  const newTime = document.getElementById("newTimeInput").value;
+  if (currentIndexKey && newTime) {
+    update(ref(db, "reports/" + currentIndexKey), { newTime });
+  }
+  document.getElementById("timeModal").style.display = "none";
+  currentIndexKey = null;
+};
+document.getElementById("cancelTimeBtn").onclick = () => {
+  document.getElementById("timeModal").style.display = "none";
+  currentIndexKey = null;
+};
+
+// Legg til ny rapport
+document.getElementById("reportForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const report = {
+    name: document.getElementById("nameInput").value.trim(),
+    date: document.getElementById("dateInput").value,
+    originalTime: document.getElementById("timeInput").value,
+    newTime: null,
+    persons: document.getElementById("personsInput").value,
+    status: "Levert"
+  };
+  push(reportsRef, report);
+  e.target.reset();
+});
+</script>
+
+</body>
+</html>
