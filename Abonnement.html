@@ -28,7 +28,7 @@
       left: 0;
       width: 100%;
       display: flex;
-      justify-content: center;  /* sentrert */
+      justify-content: center;
       gap: 40px;
       padding: 18px 0;
       background: rgba(255,255,255,0.9);
@@ -143,6 +143,21 @@
       border: 1px solid rgba(0,0,0,0.05);
     }
 
+    .delete-btn {
+      background-color: #ff4c4c;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.3s;
+    }
+
+    .delete-btn:hover {
+      background-color: #cc0000;
+    }
+
     @media(max-width: 700px) {
       nav { gap: 20px; font-size: 0.9rem; }
       form, .section { padding: 15px; }
@@ -162,6 +177,9 @@
     <h1>Abonnementsoversikt</h1>
 
     <form id="subscriptionForm">
+      <label>Bruker-ID:
+        <input type="text" id="userId" name="userId" required>
+      </label>
       <label>Navn:
         <input type="text" id="name" name="name" required>
       </label>
@@ -182,11 +200,13 @@
       <table id="activeTable">
         <thead>
           <tr>
+            <th>Bruker-ID</th>
             <th>Navn</th>
             <th>Telefon</th>
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Handling</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -198,11 +218,13 @@
       <table id="expiredTable">
         <thead>
           <tr>
+            <th>Bruker-ID</th>
             <th>Navn</th>
             <th>Telefon</th>
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Handling</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -213,7 +235,7 @@
   <!-- Firebase og logikk -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDj3E3reCspPozBwmB8SpvHbSssl9pglMA",
@@ -237,41 +259,55 @@
       return 'SUB-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    // Legg til nytt abonnement i databasen
+    // Legg til nytt abonnement
     form.addEventListener('submit', e => {
       e.preventDefault();
+      const userId = form.userId.value.trim();
       const name = form.name.value.trim();
       const phone = form.phone.value.trim();
       const start = form.start.value;
       const expiry = form.expiry.value;
       const code = generateCode();
 
-      push(ref(db, 'subscriptions'), { name, phone, start, expiry, code });
+      push(ref(db, 'subscriptions'), { userId, name, phone, start, expiry, code });
       form.reset();
     });
 
-    // Hent og vis alle abonnementer
+    // Vis abonnementer og håndter sletting
     onValue(ref(db, 'subscriptions'), snapshot => {
       activeTableBody.innerHTML = '';
       expiredTableBody.innerHTML = '';
       const today = new Date().toISOString().split('T')[0];
 
       snapshot.forEach(child => {
+        const id = child.key;
         const s = child.val();
         const row = document.createElement('tr');
         row.innerHTML = `
+          <td>${s.userId || ''}</td>
           <td>${s.name}</td>
           <td>${s.phone}</td>
           <td>${s.start}</td>
           <td>${s.code}</td>
-          <td>${s.expiry}</td>`;
+          <td>${s.expiry}</td>
+          <td><button class="delete-btn" data-id="${id}">Slett</button></td>
+        `;
 
+        // Flytt til riktig tabell
         if (s.expiry < today) {
           row.classList.add('expired');
           expiredTableBody.appendChild(row);
         } else {
           activeTableBody.appendChild(row);
         }
+      });
+
+      // Slett abonnement ved knappetrykk
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          remove(ref(db, 'subscriptions/' + id));
+        });
       });
     });
   </script>
