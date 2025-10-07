@@ -93,17 +93,17 @@ nav {
 }
 
 nav a {
-  color: #87CEFA; /* Lys blå */
+  color: #87CEFA;
   text-decoration: none;
   font-weight: 600;
-  font-size: 14px; /* Standard tekst */
+  font-size: 18px; /* Økt fra 14px til 18px */
 }
 
 /* Header-bilde */
 .header-box {
   max-width: 900px;
   height: 400px;
-  margin: 80px auto 50px auto;
+  margin: 80px auto 0 auto;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -133,6 +133,32 @@ nav a {
   text-align: center;
 }
 
+/* === Rulletekst under bildet === */
+.scrolling-text-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #0A1F44;
+  color: #fff;
+  padding: 10px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  margin-top: 30px; /* Økt avstand fra bildet */
+  margin-bottom: 40px;
+}
+
+.scrolling-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-text 20s linear infinite;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding-left: 100%;
+}
+
+@keyframes scroll-text {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
 /* Seksjoner */
 section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
 .section-title { font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #0A1F44; }
@@ -158,7 +184,7 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
 /* Responsivt */
 @media(max-width: 900px) {
   nav { gap: 15px; }
-  nav a { font-size: 14px; }
+  nav a { font-size: 16px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
   .header-box .overlay-text { font-size: 2rem; }
@@ -188,6 +214,13 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
   <div class="header-box">
       <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
       <div class="overlay-text">Reiselivet</div>
+  </div>
+
+  <!-- Rulletekst under bildet -->
+  <div class="scrolling-text-container">
+    <div class="scrolling-text">
+      Her finner du oversikt over av alt du trenger og vite for deg som ansatt i Reiselivet
+    </div>
   </div>
 
   <section id="info-bokser">
