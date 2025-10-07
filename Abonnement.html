@@ -1,83 +1,289 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abonnement – Reiselivet</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<style>
-body {
-  font-family: 'Poppins', sans-serif;
-  color: #0A1F44;
-  margin: 0;
-  background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
-  margin-top: 90px;
-}
+  <meta charset="UTF-8">
+  <title>Abonnementsoversikt</title>
+  <style>
+    :root {
+      --bg: #000; /* helsvart bakgrunn */
+      --card: #141414;
+      --text: #f0f0f0;
+      --accent: #00b8ff;
+      --expired: #ff4c4c;
+      --font: 'Segoe UI', sans-serif;
+    }
 
-/* --- Premium transparent meny --- */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  padding: 0.7em 2em;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  z-index: 100;
-}
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2em;
-  margin: 0;
-  padding: 0;
-}
-nav ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.1em;
-  transition: color 0.3s, transform 0.3s;
-}
-nav ul li a:hover {
-  color: #D4AF37;
-  transform: translateY(-2px);
-}
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      margin: 0;
+      padding: 80px 30px 30px 30px;
+    }
 
-main {
-  max-width: 900px;
-  margin: 100px auto;
-  background: rgba(255,255,255,0.7);
-  border-radius: 15px;
-  padding: 40px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  backdrop-filter: blur(10px);
-  text-align: center;
-}
-h1 { color: #0A1F44; }
-p { font-size: 1.1em; }
-footer { background: #0A1F44; color: #fff; text-align: center; padding: 30px; }
-</style>
+    /* --- Elegant meny øverst --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 18px 0;
+      background: rgba(20, 20, 20, 0.8);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 1000;
+    }
+
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background: rgba(0, 184, 255, 0.15);
+      color: #fff;
+    }
+
+    h1, h2 {
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    form {
+      background-color: var(--card);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 5px;
+      background-color: #2b2b2b;
+      color: #fff;
+      outline: none;
+      transition: background 0.3s;
+    }
+
+    input:focus {
+      background-color: #333;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background-color: #00a2e0;
+      transform: translateY(-2px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background-color: #111;
+      text-align: left;
+      color: var(--accent);
+    }
+
+    tr.expired {
+      background-color: #2a1212;
+      color: var(--expired);
+    }
+
+    .section {
+      background-color: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Responsivt */
+    @media(max-width: 700px) {
+      nav { gap: 20px; font-size: 0.9rem; }
+      form, .section { padding: 15px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <ul>
-    <li><a href="https://reiselivet.github.io">Hjem</a></li>
-    <li><a href="https://reiselivet.github.io/Report.html">Raport</a></li>
-    <li><a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a></li>
-  </ul>
-</nav>
+  <!-- Navigasjonsmeny -->
+  <nav>
+    <a href="https://reiselivet.github.io/">Hjem</a>
+    <a href="https://reiselivet.github.io/Report.html">Report</a>
+    <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
+  </nav>
 
-<main>
-  <h1>Abonnement</h1>
-  <p>Administrer og se dine abonnementer på Reiselivet.</p>
-</main>
+  <div class="container">
+    <h1>Abonnementsoversikt</h1>
 
-<footer>
-  &copy; 2025 Reiselivet. Alle rettigheter reservert.
-</footer>
+    <form id="subscriptionForm">
+      <label>Navn:
+        <input type="text" id="name" required>
+      </label>
+      <label>Telefon:
+        <input type="tel" id="phone" required>
+      </label>
+      <label>Startdato:
+        <input type="date" id="start" required>
+      </label>
+      <label>Utløpsdato:
+        <input type="date" id="expiry" required>
+      </label>
+      <button type="submit">Legg til abonnement</button>
+    </form>
+
+    <div class="section">
+      <h2>🟢 Aktive abonnementer</h2>
+      <table id="activeTable">
+        <thead>
+          <tr>
+            <th>Navn</th>
+            <th>Telefon</th>
+            <th>Startdato</th>
+            <th>Kode</th>
+            <th>Utløpsdato</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>🔴 Utløpte abonnementer</h2>
+      <table id="expiredTable">
+        <thead>
+          <tr>
+            <th>Navn</th>
+            <th>Telefon</th>
+            <th>Startdato</th>
+            <th>Kode</th>
+            <th>Utløpsdato</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Firebase regler (for referanse):
+    // {
+    //   "rules": {
+    //     ".read": "now < 1762383600000",
+    //     ".write": "now < 1762383600000"
+    //   }
+    // }
+
+    // --- Firebase Config og Initialisering ---
+    // (Erstatt med ditt eget prosjekt-ID og API-nøkler hvis du har)
+    const firebaseConfig = {
+      apiKey: "DIN_API_KEY_HER",
+      authDomain: "dittprosjekt.firebaseapp.com",
+      databaseURL: "https://dittprosjekt.firebaseio.com",
+      projectId: "dittprosjekt",
+      storageBucket: "dittprosjekt.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:1234567890:web:abcdef123456"
+    };
+
+    // Initialiser Firebase
+    import("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js").then(({ initializeApp }) => {
+      const app = initializeApp(firebaseConfig);
+      console.log("Firebase tilkoblet:", app.name);
+    });
+
+    const form = document.getElementById('subscriptionForm');
+    const activeTableBody = document.getElementById('activeTable').querySelector('tbody');
+    const expiredTableBody = document.getElementById('expiredTable').querySelector('tbody');
+
+    function generateCode() {
+      return 'SUB-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    }
+
+    function checkExpiredSubscriptions() {
+      const today = new Date().toISOString().split('T')[0];
+      const rows = Array.from(activeTableBody.querySelectorAll('tr'));
+      rows.forEach(row => {
+        const expiry = row.getAttribute('data-expiry');
+        if (expiry < today) {
+          expiredTableBody.appendChild(row);
+          row.classList.add('expired');
+        }
+      });
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const start = document.getElementById('start').value;
+      const expiry = document.getElementById('expiry').value;
+      const code = generateCode();
+
+      const row = document.createElement('tr');
+      row.setAttribute('data-expiry', expiry);
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${phone}</td>
+        <td>${start}</td>
+        <td>${code}</td>
+        <td>${expiry}</td>
+      `;
+
+      activeTableBody.appendChild(row);
+      form.reset();
+      checkExpiredSubscriptions();
+    });
+
+    checkExpiredSubscriptions();
+  </script>
 </body>
 </html>
