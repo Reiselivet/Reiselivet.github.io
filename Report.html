@@ -7,26 +7,25 @@
 
 <!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  // Din Firebase-konfigurasjon
-  const firebaseConfig = {
-    apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
-    authDomain: "reiselivet2.firebaseapp.com",
-    databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com",
-    projectId: "reiselivet2",
-    storageBucket: "reiselivet2.firebasestorage.app",
-    messagingSenderId: "478084859615",
-    appId: "1:478084859615:web:bb0e6c3042240c915f8b6a",
-    measurementId: "G-Z01PQ0K0X0"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
+  authDomain: "reiselivet2.firebaseapp.com",
+  databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com",
+  projectId: "reiselivet2",
+  storageBucket: "reiselivet2.firebasestorage.app",
+  messagingSenderId: "478084859615",
+  appId: "1:478084859615:web:bb0e6c3042240c915f8b6a",
+  measurementId: "G-Z01PQ0K0X0"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const reportsRef = ref(db, "reports");
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const reportsRef = ref(db, "reports");
 
-  window.dbRefs = { db, reportsRef, push, onValue, update, remove };
+window.dbRefs = { db, reportsRef, push, onValue, update, remove };
 </script>
 
 <style>
@@ -34,12 +33,11 @@ body {
   font-family: 'Poppins', sans-serif;
   background: #f9f9f9;
   margin: 0;
-  color: #222;
+  padding-top: 60px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 60px;
 }
 
 nav {
@@ -52,118 +50,28 @@ nav {
   padding: 0.5em 1em;
   z-index: 1000;
 }
-nav a {
-  text-decoration: none;
-  color: #3498db;
-  font-weight: 600;
-}
+nav a { text-decoration: none; color: #3498db; font-weight: 600; }
 
-header {
-  margin-top: 1em;
-  font-weight: 600;
-  font-size: 1.8em;
-  text-align: center;
-  color: #333;
-}
+header { margin-top: 1em; font-weight: 600; font-size: 1.8em; text-align: center; color: #333; }
 
-main {
-  flex: 1;
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2em;
-}
+main { flex:1; width: 100%; max-width: 700px; display: flex; flex-direction: column; align-items: center; padding: 2em; }
 
-.form-card {
-  background: rgba(255,255,255,0.9);
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 2em;
-  width: 100%;
-}
-.form-card h2 {
-  text-align: center;
-  margin-bottom: 1em;
-}
-label {
-  display: block;
-  margin-top: 0.7em;
-}
-input, button {
-  width: 100%;
-  padding: 0.8em;
-  margin-top: 0.3em;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-button {
-  margin-top: 1em;
-  background: #f1c40f;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
+.form-card { background: rgba(255,255,255,0.9); border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 2em; width: 100%; }
+.form-card h2 { text-align: center; margin-bottom: 1em; }
+label { display:block; margin-top:0.7em; }
+input, button { width:100%; padding:0.8em; margin-top:0.3em; border-radius:10px; border:1px solid #ccc; }
+button { margin-top:1em; background:#f1c40f; color:#000; font-weight:bold; cursor:pointer; }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2em;
-  background: rgba(255,255,255,0.95);
-  border-radius: 16px;
-  overflow: hidden;
-}
-th, td {
-  padding: 0.8em 1em;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-th {
-  background: #eee;
-  font-weight: 500;
-  color: #333;
-}
+table { width: 100%; border-collapse: collapse; margin-top: 2em; background: rgba(255,255,255,0.95); border-radius: 16px; overflow:hidden; }
+th, td { padding:0.8em 1em; border-bottom:1px solid rgba(0,0,0,0.1); }
+th { background:#eee; font-weight:500; color:#333; }
 
-.status {
-  padding: 0.3em 0.6em;
-  border-radius: 6px;
-  font-size: 0.9em;
-  font-weight: 600;
-  display: inline-block;
-  cursor: pointer;
-}
-.status.Levert { background: #2ecc71; color: white; }
-.status.Hentet { background: #3498db; color: white; }
-.status.Utsatt { background: #f1c40f; color: black; }
+.status { padding:0.3em 0.6em; border-radius:6px; font-size:0.9em; font-weight:600; display:inline-block; cursor:pointer; text-align:center; }
+.status.Levert { background:#2ecc71; color:white; }
+.status.Hentet { background:#3498db; color:white; }
+.status.Utsatt { background:#f1c40f; color:black; }
 
-.delete-btn {
-  padding: 0.3em 0.6em;
-  border-radius: 6px;
-  font-size: 0.9em;
-  font-weight: 600;
-  background: #e74c3c;
-  color: white;
-  cursor: pointer;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: white;
-  padding: 2em;
-  border-radius: 12px;
-  max-width: 320px;
-  width: 90%;
-  text-align: center;
-}
+.remove-btn { padding:0.3em 0.6em; border-radius:6px; font-size:0.9em; font-weight:600; background:#e74c3c; color:white; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -197,21 +105,12 @@ th {
         <th>Ny tid</th>
         <th>Antall</th>
         <th>Status</th>
-        <th></th> <!-- For slett-knapp -->
+        <th></th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 </main>
-
-<div id="timeModal" class="modal">
-  <div class="modal-content">
-    <h3>Sett ny hentetid</h3>
-    <input type="time" id="newTimeInput">
-    <button id="saveTimeBtn">Lagre</button>
-    <button id="cancelTimeBtn">Avbryt</button>
-  </div>
-</div>
 
 <script type="module">
 const { db, reportsRef, push, onValue, update, remove } = window.dbRefs;
@@ -238,52 +137,26 @@ function renderTable() {
       <td>${r.newTime || "-"}</td>
       <td>${r.persons}</td>
       <td><span class="status ${r.status}">${r.status}</span></td>
-      <td><button class="delete-btn">×</button></td>
+      <td><button class="remove-btn">Fjern</button></td>
     `;
     tbody.appendChild(tr);
 
     // Status knapp
     tr.querySelector(".status").addEventListener("click", () => {
-      cycleStatus(key);
+      const order = ["Levert", "Hentet", "Utsatt"];
+      const next = order[(order.indexOf(r.status) + 1) % order.length];
+      r.status = next;
+      update(ref(db, "reports/" + key), r);
     });
 
-    // Slett knapp
-    tr.querySelector(".delete-btn").addEventListener("click", () => {
-      if (confirm(`Vil du slette rapporten til ${r.name}?`)) {
+    // Fjern knapp
+    tr.querySelector(".remove-btn").addEventListener("click", () => {
+      if (confirm(`Vil du fjerne rapporten til ${r.name}?`)) {
         remove(ref(db, "reports/" + key));
       }
     });
   });
 }
-
-function cycleStatus(key) {
-  const r = reports.find(([k]) => k === key)[1];
-  const order = ["Levert", "Hentet", "Utsatt"];
-  const next = order[(order.indexOf(r.status) + 1) % order.length];
-  r.status = next;
-
-  if (next === "Utsatt") {
-    currentIndexKey = key;
-    document.getElementById("newTimeInput").value = r.newTime || r.originalTime || "";
-    document.getElementById("timeModal").style.display = "flex";
-  }
-
-  update(ref(db, "reports/" + key), r);
-}
-
-// Modal for ny hentetid
-document.getElementById("saveTimeBtn").onclick = () => {
-  const newTime = document.getElementById("newTimeInput").value;
-  if (currentIndexKey && newTime) {
-    update(ref(db, "reports/" + currentIndexKey), { newTime });
-  }
-  document.getElementById("timeModal").style.display = "none";
-  currentIndexKey = null;
-};
-document.getElementById("cancelTimeBtn").onclick = () => {
-  document.getElementById("timeModal").style.display = "none";
-  currentIndexKey = null;
-};
 
 // Legg til ny rapport
 document.getElementById("reportForm").addEventListener("submit", (e) => {
