@@ -4,30 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reiselivet Rapportarkiv</title>
-
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
-  authDomain: "reiselivet2.firebaseapp.com",
-  databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com",
-  projectId: "reiselivet2",
-  storageBucket: "reiselivet2.firebasestorage.app",
-  messagingSenderId: "478084859615",
-  appId: "1:478084859615:web:bb0e6c3042240c915f8b6a",
-  measurementId: "G-Z01PQ0K0X0"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const reportsRef = ref(db, "reports");
-
-window.dbRefs = { db, reportsRef, push, onValue, update, remove };
-</script>
-
 <style>
 body { font-family: 'Poppins', sans-serif; background:#f9f9f9; margin:0; padding-top:60px; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
 nav { position: fixed; top:0; left:50%; transform:translateX(-50%); display:flex; gap:1em; padding:0.5em 1em; z-index:1000; }
@@ -80,7 +56,7 @@ th { background:#eee; font-weight:500; color:#333; }
         <th>Ny tid</th>
         <th>Antall</th>
         <th>Status</th>
-        <th></th>
+        <th>Handling</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -88,51 +64,29 @@ th { background:#eee; font-weight:500; color:#333; }
 </main>
 
 <script type="module">
-const { db, reportsRef, push, onValue, update, remove } = window.dbRefs;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-// Hent rapporter
-onValue(reportsRef, snapshot => {
-  const data = snapshot.val();
-  renderTable(data ? Object.entries(data) : []);
-});
+const firebaseConfig = {
+  apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
+  authDomain: "reiselivet2.firebaseapp.com",
+  databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com",
+  projectId: "reiselivet2",
+  storageBucket: "reiselivet2.firebasestorage.app",
+  messagingSenderId: "478084859615",
+  appId: "1:478084859615:web:bb0e6c3042240c915f8b6a",
+  measurementId: "G-Z01PQ0K0X0"
+};
 
-function renderTable(reports) {
-  const tbody = document.querySelector("#reportTable tbody");
-  tbody.innerHTML = "";
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const reportsRef = ref(db, "reports");
 
-  reports.forEach(([key, r]) => {
-    const tr = document.createElement("tr");
+const form = document.getElementById("reportForm");
+const tbody = document.querySelector("#reportTable tbody");
 
-    tr.innerHTML = `
-      <td>${r.name}</td>
-      <td>${r.date}</td>
-      <td>${r.originalTime}</td>
-      <td>${r.newTime || "-"}</td>
-      <td>${r.persons}</td>
-      <td><button class="status ${r.status}">${r.status}</button></td>
-      <td><button class="remove-btn">Fjern</button></td>
-    `;
-
-    tbody.appendChild(tr);
-
-    // Status-knapp
-    tr.querySelector(".status").addEventListener("click", () => {
-      const order = ["Levert", "Hentet", "Utsatt"];
-      const next = order[(order.indexOf(r.status) + 1) % order.length];
-      update(ref(db, "reports/" + key), { status: next });
-    });
-
-    // Fjern-knapp
-    tr.querySelector(".remove-btn").addEventListener("click", () => {
-      if (confirm(`Vil du fjerne rapporten til ${r.name}?`)) {
-        remove(ref(db, "reports/" + key));
-      }
-    });
-  });
-}
-
-// Legg til ny rapport
-document.getElementById("reportForm").addEventListener("submit", e => {
+// Lag ny rapport
+form.addEventListener("submit", e => {
   e.preventDefault();
   const report = {
     name: document.getElementById("nameInput").value.trim(),
@@ -143,9 +97,40 @@ document.getElementById("reportForm").addEventListener("submit", e => {
     status: "Levert"
   };
   push(reportsRef, report);
-  e.target.reset();
+  form.reset();
+});
+
+// Hent og vis rapporter i sanntid
+onValue(reportsRef, snapshot => {
+  tbody.innerHTML = "";
+  const data = snapshot.val();
+  if (!data) return;
+  Object.entries(data).forEach(([key, r]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.name}</td>
+      <td>${r.date}</td>
+      <td>${r.originalTime}</td>
+      <td>${r.newTime || "-"}</td>
+      <td>${r.persons}</td>
+      <td><button class="status ${r.status}">${r.status}</button></td>
+      <td><button class="remove-btn">Fjern</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    // Status-knapp
+    tr.querySelector(".status").addEventListener("click", () => {
+      const order = ["Levert","Hentet","Utsatt"];
+      const next = order[(order.indexOf(r.status)+1)%order.length];
+      update(ref(db,"reports/"+key), {status:next});
+    });
+
+    // Fjern-knapp
+    tr.querySelector(".remove-btn").addEventListener("click", () => {
+      remove(ref(db,"reports/"+key));
+    });
+  });
 });
 </script>
-
 </body>
 </html>
