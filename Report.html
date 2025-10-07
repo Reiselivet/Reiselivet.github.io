@@ -27,12 +27,180 @@
   window.dbRefs = { db, reportsRef, push, onValue, update };
 </script>
 
-<!-- Her kan du lime inn hele din eksisterende CSS som du har i koden -->
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
 
+nav {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1em;
+  padding: 0.5em 1em;
+  z-index: 1000;
+}
+nav a {
+  text-decoration: none;
+  color: #3498db;
+  font-weight: 600;
+}
+
+header {
+  margin-top: 1em;
+  font-weight: 600;
+  font-size: 1.8em;
+  text-align: center;
+  color: #333;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+}
+
+.form-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 2em;
+  width: 100%;
+}
+.form-card h2 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+label {
+  display: block;
+  margin-top: 0.7em;
+}
+input, button {
+  width: 100%;
+  padding: 0.8em;
+  margin-top: 0.3em;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+button {
+  margin-top: 1em;
+  background: #f1c40f;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2em;
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  overflow: hidden;
+}
+th, td {
+  padding: 0.8em 1em;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+th {
+  background: #eee;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Status-knapper */
+.status {
+  padding: 0.3em 0.6em;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+  display: inline-block;
+  cursor: pointer;
+}
+.status.Levert { background: #2ecc71; color: white; }
+.status.Hentet { background: #3498db; color: white; }
+.status.Utsatt { background: #f1c40f; color: black; }
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 2em;
+  border-radius: 12px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+}
+</style>
 </head>
 <body>
 
-<!-- Din eksisterende HTML for meny, form, tabell, modal -->
+<nav>
+  <a href="https://reiselivet.github.io/">Hjem</a>
+  <a href="https://reiselivet.github.io/Report.html">Report</a>
+  <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
+</nav>
+
+<header>Reiselivet</header>
+
+<main>
+  <div class="form-card">
+    <h2>📝 Ny Rapport</h2>
+    <form id="reportForm">
+      <label>Navn:</label><input type="text" id="nameInput" required>
+      <label>Dato:</label><input type="date" id="dateInput" required>
+      <label>Hentetid:</label><input type="time" id="timeInput" required>
+      <label>Antall personer:</label><input type="number" id="personsInput" min="1" required>
+      <button type="submit">📦 Lagre Rapport</button>
+    </form>
+  </div>
+
+  <table id="reportTable">
+    <thead>
+      <tr>
+        <th>Navn</th>
+        <th>Dato</th>
+        <th>Oppr. tid</th>
+        <th>Ny tid</th>
+        <th>Antall</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<div id="timeModal" class="modal">
+  <div class="modal-content">
+    <h3>Sett ny hentetid</h3>
+    <input type="time" id="newTimeInput">
+    <button id="saveTimeBtn">Lagre</button>
+    <button id="cancelTimeBtn">Avbryt</button>
+  </div>
+</div>
 
 <script type="module">
 const { db, reportsRef, push, onValue, update } = window.dbRefs;
@@ -40,14 +208,12 @@ const { db, reportsRef, push, onValue, update } = window.dbRefs;
 let reports = [];
 let currentIndexKey = null;
 
-// Hent data fra Firebase i sanntid
 onValue(reportsRef, (snapshot) => {
   const data = snapshot.val();
   reports = data ? Object.entries(data) : [];
   renderTable();
 });
 
-// Render tabellen
 function renderTable() {
   const tbody = document.querySelector("#reportTable tbody");
   tbody.innerHTML = "";
@@ -64,7 +230,6 @@ function renderTable() {
   });
 }
 
-// Endre status
 window.cycleStatus = function(key) {
   const r = reports.find(([k]) => k === key)[1];
   const order = ["Levert", "Hentet", "Utsatt"];
@@ -80,7 +245,6 @@ window.cycleStatus = function(key) {
   update(ref(db, "reports/" + key), r);
 };
 
-// Lagre ny hentetid
 document.getElementById("saveTimeBtn").onclick = () => {
   const newTime = document.getElementById("newTimeInput").value;
   if (currentIndexKey && newTime) {
@@ -94,7 +258,6 @@ document.getElementById("cancelTimeBtn").onclick = () => {
   currentIndexKey = null;
 };
 
-// Legg til ny rapport
 document.getElementById("reportForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const report = {
