@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rapport – Reiselivet</title>
+<title>Raport – Reiselivet</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
+  color: #0A1F44;
   margin: 0;
+  background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
   margin-top: 90px;
 }
 
-/* --- Meny --- */
+/* --- Premium transparent meny --- */
 nav {
   position: fixed;
   top: 0;
@@ -21,32 +22,48 @@ nav {
   background: rgba(255,255,255,0.2);
   backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0.7em 2em;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   z-index: 100;
 }
-nav .logo img { height: 55px; border-radius: 10px; }
-nav ul { list-style: none; display: flex; gap: 2em; margin: 0; padding: 0; }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+}
 nav ul li a {
-  text-decoration: none; color: #fff; font-weight: 600; font-size: 1.1em;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1em;
   transition: color 0.3s, transform 0.3s;
 }
-nav ul li a:hover { color: #D4AF37; transform: translateY(-2px); }
+nav ul li a:hover {
+  color: #D4AF37;
+  transform: translateY(-2px);
+}
 
-main { max-width: 800px; margin: auto; padding: 40px; text-align: center; background: rgba(255,255,255,0.6); border-radius: 15px; backdrop-filter: blur(8px); }
+main {
+  max-width: 900px;
+  margin: 100px auto;
+  background: rgba(255,255,255,0.7);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
 h1 { color: #0A1F44; }
+p { font-size: 1.1em; }
+footer { background: #0A1F44; color: #fff; text-align: center; padding: 30px; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">
-    <a href="https://reiselivet.github.io">
-      <img src="ChatGPT Image 7. okt. 2025, 01_09_14-2.png" alt="Logo">
-    </a>
-  </div>
   <ul>
     <li><a href="https://reiselivet.github.io">Hjem</a></li>
     <li><a href="https://reiselivet.github.io/Report.html">Raport</a></li>
@@ -55,9 +72,12 @@ h1 { color: #0A1F44; }
 </nav>
 
 <main>
-  <h1>Rapportarkiv</h1>
-  <p>Her kan du registrere og se rapporter for leveringer og aktiviteter.</p>
+  <h1>Raportside</h1>
+  <p>Her kan du legge inn rapporter, oversikter eller analyser for Reiselivet.</p>
 </main>
 
+<footer>
+  &copy; 2025 Reiselivet. Alle rettigheter reservert.
+</footer>
 </body>
 </html>
