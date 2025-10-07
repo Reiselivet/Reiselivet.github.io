@@ -10,7 +10,7 @@ body {
   color: #0A1F44;
   margin: 0;
   background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
-  overflow: hidden; /* Hindre scrolling før login */
+  overflow: hidden;
 }
 
 /* Blur-effekt når man ikke er logget inn */
@@ -93,9 +93,10 @@ nav {
 }
 
 nav a {
-  color: #0A1F44;
+  color: #87CEFA; /* Lys blå */
   text-decoration: none;
   font-weight: 600;
+  font-size: 14px; /* Standard tekst */
 }
 
 /* Header-bilde */
@@ -152,21 +153,12 @@ section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
 
 /* Footer */
 footer { background-color: #0A1F44; color: #fff; padding: 40px 20px; text-align: center; }
-footer a.social-link { 
-    color: #0000FF; /* Blå */
-    font-size: 14px; /* Standard tekst */
-    text-decoration: none;
-    margin: 0 5px;
-}
-footer a.social-link:hover {
-    text-decoration: underline;
-}
 footer p { margin-top: 15px; font-size: 0.9rem; }
 
 /* Responsivt */
 @media(max-width: 900px) {
   nav { gap: 15px; }
-  nav a { font-size: 0.9rem; }
+  nav a { font-size: 14px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
   .header-box .overlay-text { font-size: 2rem; }
@@ -226,11 +218,6 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
   </section>
 
   <footer>
-      <p>
-          <a href="#" class="social-link">Facebook</a> | 
-          <a href="#" class="social-link">Instagram</a> | 
-          <a href="#" class="social-link">LinkedIn</a>
-      </p>
       <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
   </footer>
 </div>
