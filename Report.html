@@ -23,6 +23,10 @@ th { background:#eee; font-weight:500; color:#333; }
 .status.Hentet { background:#3498db; color:white; }
 .status.Utsatt { background:#f1c40f; color:black; }
 .remove-btn { padding:0.3em 0.6em; border-radius:6px; font-size:0.9em; font-weight:600; background:#e74c3c; color:white; cursor:pointer; }
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); justify-content:center; align-items:center; z-index:1000; }
+.modal-content { background:white; padding:2em; border-radius:12px; text-align:center; max-width:300px; width:90%; }
+.modal-content input { margin-top:1em; padding:0.5em; width:100%; font-size:1em; }
+.modal-content button { margin-top:1em; padding:0.5em 1em; margin-right:0.5em; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -63,6 +67,17 @@ th { background:#eee; font-weight:500; color:#333; }
   </table>
 </main>
 
+<div class="modal" id="timeModal">
+  <div class="modal-content">
+    <h3>Sett ny hentetid</h3>
+    <input type="time" id="newTimeInput">
+    <div>
+      <button id="saveTimeBtn">Lagre</button>
+      <button id="cancelTimeBtn">Avbryt</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
@@ -84,6 +99,12 @@ const reportsRef = ref(db, "reports");
 
 const form = document.getElementById("reportForm");
 const tbody = document.querySelector("#reportTable tbody");
+const modal = document.getElementById("timeModal");
+const newTimeInput = document.getElementById("newTimeInput");
+const saveBtn = document.getElementById("saveTimeBtn");
+const cancelBtn = document.getElementById("cancelTimeBtn");
+
+let currentKey = null;
 
 // Lag ny rapport
 form.addEventListener("submit", e => {
@@ -122,7 +143,13 @@ onValue(reportsRef, snapshot => {
     tr.querySelector(".status").addEventListener("click", () => {
       const order = ["Levert","Hentet","Utsatt"];
       const next = order[(order.indexOf(r.status)+1)%order.length];
-      update(ref(db,"reports/"+key), {status:next});
+      if(next === "Utsatt") {
+        currentKey = key;
+        newTimeInput.value = r.newTime || r.originalTime || "";
+        modal.style.display = "flex";
+      } else {
+        update(ref(db,"reports/"+key), {status:next});
+      }
     });
 
     // Fjern-knapp
@@ -130,6 +157,21 @@ onValue(reportsRef, snapshot => {
       remove(ref(db,"reports/"+key));
     });
   });
+});
+
+// Modal knapper
+saveBtn.addEventListener("click", () => {
+  const newTime = newTimeInput.value;
+  if(currentKey && newTime){
+    update(ref(db,"reports/"+currentKey), {status:"Utsatt", newTime:newTime});
+  }
+  modal.style.display = "none";
+  currentKey = null;
+});
+
+cancelBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  currentKey = null;
 });
 </script>
 </body>
