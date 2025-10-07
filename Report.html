@@ -10,15 +10,16 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  // 🔹 Bytt ut med dine egne verdier fra Firebase
+  // 🔹 Din Firebase-konfigurasjon
   const firebaseConfig = {
-    apiKey: "DIN_API_KEY",
+    apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
     authDomain: "reiselivet2.firebaseapp.com",
-    databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com/",
+    databaseURL: "https://reiselivet2-default-rtdb.firebaseio.com",
     projectId: "reiselivet2",
-    storageBucket: "reiselivet2.appspot.com",
-    messagingSenderId: "DIN_SENDER_ID",
-    appId: "DIN_APP_ID"
+    storageBucket: "reiselivet2.firebasestorage.app",
+    messagingSenderId: "478084859615",
+    appId: "1:478084859615:web:bb0e6c3042240c915f8b6a",
+    measurementId: "G-Z01PQ0K0X0"
   };
 
   const app = initializeApp(firebaseConfig);
