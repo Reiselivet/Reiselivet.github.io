@@ -4,281 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reiselivet Rapportarkiv</title>
+
 <!-- Firebase SDK -->
 <script type="module">
-  // Importer Firebase-moduler
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  // Din Firebase-konfigurasjon – bytt med dine verdier
   const firebaseConfig = {
     apiKey: "DIN_API_KEY",
     authDomain: "DITT_PROSJEKT.firebaseapp.com",
-    databaseURL: "https://DITT_PROSJEKT.firebaseio.com",
+    databaseURL: "https://DITT_PROSJEKT.firebaseio.com/",
     projectId: "DITT_PROSJEKT",
     storageBucket: "DITT_PROSJEKT.appspot.com",
     messagingSenderId: "DIN_SENDER_ID",
     appId: "DIN_APP_ID"
   };
 
-  // Init Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const reportsRef = ref(db, "reports");
 
   window.dbRefs = { db, reportsRef, push, onValue, update };
 </script>
-<style>
-:root {
-  --gold: #f1c40f;
-  --green: #2ecc71;
-  --blue: #3498db;
-  --white-glass: rgba(255,255,255,0.75);
-}
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
-  margin: 0;
-  color: #222;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+<!-- Her kan du lime inn hele din eksisterende CSS som du har i koden -->
 
-/* Topp-meny */
-.top-menu {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1em;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 0.5em 1em;
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
-  z-index: 1000;
-}
-
-.top-menu a {
-  text-decoration: none;
-  color: #3498db;
-  font-weight: 600;
-  padding: 0.5em 1em;
-  border-radius: 8px;
-  transition: background 0.3s, color 0.3s;
-}
-
-.top-menu a:hover {
-  background: rgba(52, 152, 219, 0.2);
-}
-
-header {
-  margin-top: 4em;
-  font-weight: 600;
-  font-size: 1.8em;
-  text-align: center;
-  letter-spacing: 1px;
-  color: #333;
-}
-
-main {
-  flex: 1;
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2em;
-}
-
-.form-card {
-  background: var(--white-glass);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-  padding: 2em;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-.form-card:hover {
-  transform: translateY(-2px);
-}
-.form-card h2 {
-  text-align: center;
-  color: #555;
-  font-weight: 500;
-  margin-bottom: 1em;
-}
-
-label {
-  display: block;
-  margin: 0.7em 0 0.3em;
-  font-size: 0.9em;
-  color: #333;
-}
-input, button {
-  width: 100%;
-  padding: 0.8em;
-  border: none;
-  border-radius: 10px;
-  font-size: 1em;
-}
-input {
-  background: rgba(255,255,255,0.8);
-  border: 1px solid #ccc;
-}
-button {
-  background: linear-gradient(135deg, var(--gold), #f39c12);
-  color: #000;
-  font-weight: bold;
-  margin-top: 1em;
-  cursor: pointer;
-  transition: 0.3s;
-}
-button:hover {
-  transform: scale(1.03);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2em;
-  background: rgba(255,255,255,0.85);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-th, td {
-  padding: 0.8em 1em;
-  text-align: left;
-}
-th {
-  background: rgba(240,240,240,0.8);
-  font-weight: 500;
-  color: #555;
-}
-td {
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-/* Status-knapper */
-.status {
-  padding: 0.5em 1em;
-  border-radius: 8px;
-  font-size: 0.9em;
-  font-weight: 600;
-  display: inline-block;
-  cursor: pointer;
-  text-align: center;
-  min-width: 100px;
-  transition: 0.3s;
-  margin: 0.2em;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.status.Levert {
-  background: linear-gradient(135deg, var(--green), #27ae60);
-  color: white;
-}
-.status.Hentet {
-  background: linear-gradient(135deg, var(--blue), #2980b9);
-  color: white;
-}
-.status.Utsatt {
-  background: linear-gradient(135deg, var(--gold), #e1b12c);
-  color: black;
-  border: 1px solid #d4ac0d;
-}
-
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: white;
-  padding: 2em;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  max-width: 320px;
-  width: 90%;
-  text-align: center;
-}
-.modal-content h3 {
-  margin-bottom: 1em;
-  color: #333;
-}
-.modal-content input {
-  margin-bottom: 1em;
-}
-.modal-content button {
-  margin-top: 0.5em;
-}
-</style>
 </head>
 <body>
 
-<!-- Topp-meny -->
-<nav class="top-menu">
-  <a href="https://reiselivet.github.io/">Hjem</a>
-  <a href="https://reiselivet.github.io/Report.html">Report</a>
-  <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
-</nav>
-
-<header>Reiselivet</header>
-
-<main>
-  <div class="form-card">
-    <h2>📝 Ny Rapport</h2>
-    <form id="reportForm">
-      <label>Navn:</label>
-      <input type="text" id="nameInput" required>
-      <label>Dato:</label>
-      <input type="date" id="dateInput" required>
-      <label>Hentetid:</label>
-      <input type="time" id="timeInput" required>
-      <label>Antall personer:</label>
-      <input type="number" id="personsInput" min="1" required>
-      <button type="submit">📦 Lagre Rapport</button>
-    </form>
-  </div>
-
-  <table id="reportTable">
-    <thead>
-      <tr>
-        <th>Navn</th>
-        <th>Dato</th>
-        <th>Oppr. tid</th>
-        <th>Ny tid</th>
-        <th>Antall</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</main>
-
-<!-- Modal for ny tid -->
-<div id="timeModal" class="modal">
-  <div class="modal-content">
-    <h3>Sett ny hentetid</h3>
-    <input type="time" id="newTimeInput">
-    <button id="saveTimeBtn">Lagre</button>
-    <button id="cancelTimeBtn">Avbryt</button>
-  </div>
-</div>
+<!-- Din eksisterende HTML for meny, form, tabell, modal -->
 
 <script type="module">
-// Bruk Firebase som globalt
 const { db, reportsRef, push, onValue, update } = window.dbRefs;
 
 let reports = [];
@@ -295,7 +51,7 @@ onValue(reportsRef, (snapshot) => {
 function renderTable() {
   const tbody = document.querySelector("#reportTable tbody");
   tbody.innerHTML = "";
-  reports.forEach(([key, r], i) => {
+  reports.forEach(([key, r]) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${r.name}</td>
