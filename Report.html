@@ -8,9 +8,9 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  // 🔹 Din Firebase-konfigurasjon
+  // Din Firebase-konfigurasjon
   const firebaseConfig = {
     apiKey: "AIzaSyCPpeMZkVGEqSyez_2P_WpVP7pWPP6Q6tE",
     authDomain: "reiselivet2.firebaseapp.com",
@@ -26,7 +26,7 @@
   const db = getDatabase(app);
   const reportsRef = ref(db, "reports");
 
-  window.dbRefs = { db, reportsRef, push, onValue, update };
+  window.dbRefs = { db, reportsRef, push, onValue, update, remove };
 </script>
 
 <style>
@@ -124,7 +124,6 @@ th {
   color: #333;
 }
 
-/* Status-knapper */
 .status {
   padding: 0.3em 0.6em;
   border-radius: 6px;
@@ -137,7 +136,16 @@ th {
 .status.Hentet { background: #3498db; color: white; }
 .status.Utsatt { background: #f1c40f; color: black; }
 
-/* Modal */
+.delete-btn {
+  padding: 0.3em 0.6em;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+  background: #e74c3c;
+  color: white;
+  cursor: pointer;
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -189,6 +197,7 @@ th {
         <th>Ny tid</th>
         <th>Antall</th>
         <th>Status</th>
+        <th>Slett</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -205,7 +214,7 @@ th {
 </div>
 
 <script type="module">
-const { db, reportsRef, push, onValue, update } = window.dbRefs;
+const { db, reportsRef, push, onValue, update, remove } = window.dbRefs;
 
 let reports = [];
 let currentIndexKey = null;
@@ -228,12 +237,26 @@ function renderTable() {
       <td>${r.originalTime}</td>
       <td>${r.newTime || "-"}</td>
       <td>${r.persons}</td>
-      <td><span class="status ${r.status}" onclick="cycleStatus('${key}')">${r.status}</span></td>`;
+      <td><span class="status ${r.status}">${r.status}</span></td>
+      <td><span class="delete-btn">Slett</span></td>
+    `;
     tbody.appendChild(tr);
+
+    // Status knapp
+    tr.querySelector(".status").addEventListener("click", () => {
+      cycleStatus(key);
+    });
+
+    // Slett knapp
+    tr.querySelector(".delete-btn").addEventListener("click", () => {
+      if (confirm(`Vil du slette rapporten til ${r.name}?`)) {
+        remove(ref(db, "reports/" + key));
+      }
+    });
   });
 }
 
-window.cycleStatus = function(key) {
+function cycleStatus(key) {
   const r = reports.find(([k]) => k === key)[1];
   const order = ["Levert", "Hentet", "Utsatt"];
   const next = order[(order.indexOf(r.status) + 1) % order.length];
@@ -246,34 +269,8 @@ window.cycleStatus = function(key) {
   }
 
   update(ref(db, "reports/" + key), r);
-};
+}
 
+// Modal for ny hentetid
 document.getElementById("saveTimeBtn").onclick = () => {
-  const newTime = document.getElementById("newTimeInput").value;
-  if (currentIndexKey && newTime) {
-    update(ref(db, "reports/" + currentIndexKey), { newTime });
-  }
-  document.getElementById("timeModal").style.display = "none";
-  currentIndexKey = null;
-};
-document.getElementById("cancelTimeBtn").onclick = () => {
-  document.getElementById("timeModal").style.display = "none";
-  currentIndexKey = null;
-};
-
-document.getElementById("reportForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const report = {
-    name: document.getElementById("nameInput").value.trim(),
-    date: document.getElementById("dateInput").value,
-    originalTime: document.getElementById("timeInput").value,
-    newTime: null,
-    persons: document.getElementById("personsInput").value,
-    status: "Levert"
-  };
-  push(reportsRef, report);
-  e.target.reset();
-});
-</script>
-</body>
-</html>
+  const newTime
