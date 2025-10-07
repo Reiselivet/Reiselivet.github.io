@@ -21,7 +21,7 @@
       padding: 100px 30px 30px 30px;
     }
 
-    /* --- Meny øverst --- */
+    /* Meny øverst */
     nav {
       position: fixed;
       top: 0;
@@ -57,7 +57,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
@@ -78,7 +78,8 @@
 
     input[type="text"],
     input[type="tel"],
-    input[type="date"] {
+    input[type="date"],
+    input[type="number"] {
       width: 100%;
       max-width: 400px;
       padding: 10px;
@@ -158,6 +159,28 @@
       background-color: #cc0000;
     }
 
+    .update-btn {
+      background-color: #00b050;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.3s;
+    }
+
+    .update-btn:hover {
+      background-color: #007800;
+    }
+
+    input.stempel-input {
+      width: 60px;
+      padding: 4px 6px;
+      font-size: 0.9em;
+      text-align: center;
+    }
+
     @media(max-width: 700px) {
       nav { gap: 20px; font-size: 0.9rem; }
       form, .section { padding: 15px; }
@@ -192,6 +215,9 @@
       <label>Utløpsdato:
         <input type="date" id="expiry" name="expiry" required>
       </label>
+      <label>Stempel (antall):
+        <input type="number" id="stempel" name="stempel" min="0" value="0" required>
+      </label>
       <button type="submit">Legg til abonnement</button>
     </form>
 
@@ -206,6 +232,7 @@
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Stempel</th>
             <th>Handling</th>
           </tr>
         </thead>
@@ -224,6 +251,7 @@
             <th>Startdato</th>
             <th>Kode</th>
             <th>Utløpsdato</th>
+            <th>Stempel</th>
             <th>Handling</th>
           </tr>
         </thead>
@@ -232,10 +260,9 @@
     </div>
   </div>
 
-  <!-- Firebase og logikk -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDj3E3reCspPozBwmB8SpvHbSssl9pglMA",
@@ -267,13 +294,14 @@
       const phone = form.phone.value.trim();
       const start = form.start.value;
       const expiry = form.expiry.value;
+      const stempel = Number(form.stempel.value);
       const code = generateCode();
 
-      push(ref(db, 'subscriptions'), { userId, name, phone, start, expiry, code });
+      push(ref(db, 'subscriptions'), { userId, name, phone, start, expiry, code, stempel });
       form.reset();
     });
 
-    // Vis abonnementer og håndter sletting
+    // Vis abonnementer og håndter sletting og oppdatering
     onValue(ref(db, 'subscriptions'), snapshot => {
       activeTableBody.innerHTML = '';
       expiredTableBody.innerHTML = '';
@@ -283,6 +311,7 @@
         const id = child.key;
         const s = child.val();
         const row = document.createElement('tr');
+
         row.innerHTML = `
           <td>${s.userId || ''}</td>
           <td>${s.name}</td>
@@ -290,10 +319,13 @@
           <td>${s.start}</td>
           <td>${s.code}</td>
           <td>${s.expiry}</td>
+          <td>
+            <input class="stempel-input" type="number" value="${s.stempel || 0}" min="0" data-id="${id}">
+            <button class="update-btn" data-id="${id}">Oppdater</button>
+          </td>
           <td><button class="delete-btn" data-id="${id}">Slett</button></td>
         `;
 
-        // Flytt til riktig tabell
         if (s.expiry < today) {
           row.classList.add('expired');
           expiredTableBody.appendChild(row);
@@ -302,11 +334,21 @@
         }
       });
 
-      // Slett abonnement ved knappetrykk
+      // Slett abonnement
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
           remove(ref(db, 'subscriptions/' + id));
+        });
+      });
+
+      // Oppdater stempel
+      document.querySelectorAll('.update-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const input = document.querySelector(`input.stempel-input[data-id="${id}"]`);
+          const newStempel = Number(input.value);
+          update(ref(db, 'subscriptions/' + id), { stempel: newStempel });
         });
       });
     });
