@@ -16,35 +16,31 @@ body {
 /* === Navigasjonsmeny === */
 nav {
   position: absolute;
-  top: 15px;
-  width: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
   gap: 40px;
   z-index: 10;
+  padding: 15px 0;
+  background: transparent; /* Gjennomsiktig */
 }
 
 nav a {
-  color: #fff;
+  color: #0A1F44; /* Blå tekst */
   text-decoration: none;
   font-weight: 600;
-  background: rgba(10, 31, 68, 0.4);
-  padding: 10px 18px;
-  border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
-  backdrop-filter: blur(5px);
-}
-
-nav a:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  transition: none; /* Ingen hover-effekt */
 }
 
 /* Header-bilde */
 .header-box {
     max-width: 900px;
     height: 400px;
-    margin: 80px auto 50px auto; /* flyttet litt ned for plass til meny */
+    margin: 80px auto 50px auto; /* plass til meny */
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -102,7 +98,7 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
 /* Responsivt */
 @media(max-width: 900px) {
   nav { gap: 15px; }
-  nav a { padding: 8px 12px; font-size: 0.9rem; }
+  nav a { font-size: 0.9rem; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
   .header-box .overlay-text { font-size: 2rem; }
