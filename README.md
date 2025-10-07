@@ -1,4 +1,3 @@
-
 <html lang="no">
 <head>
 <meta charset="UTF-8">
@@ -153,7 +152,15 @@ section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
 
 /* Footer */
 footer { background-color: #0A1F44; color: #fff; padding: 40px 20px; text-align: center; }
-footer a { color: #D4AF37; margin: 0 10px; }
+footer a.social-link { 
+    color: #0000FF; /* Blå */
+    font-size: 14px; /* Standard tekst */
+    text-decoration: none;
+    margin: 0 5px;
+}
+footer a.social-link:hover {
+    text-decoration: underline;
+}
 footer p { margin-top: 15px; font-size: 0.9rem; }
 
 /* Responsivt */
@@ -219,8 +226,11 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
   </section>
 
   <footer>
-      <p>Kontakt oss: <a href="mailto:kontakt@reiseliv.no">kontakt@reiseliv.no</a></p>
-      <p><a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">LinkedIn</a></p>
+      <p>
+          <a href="#" class="social-link">Facebook</a> | 
+          <a href="#" class="social-link">Instagram</a> | 
+          <a href="#" class="social-link">LinkedIn</a>
+      </p>
       <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
   </footer>
 </div>
