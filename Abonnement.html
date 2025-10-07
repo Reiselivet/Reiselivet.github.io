@@ -1,148 +1,71 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <title>Abonnementsoversikt</title>
-  <style>
-    :root {
-      --bg: #ffffff;
-      --card: rgba(255, 255, 255, 0.6);
-      --text: #000000;
-      --accent: #00aaff;
-      --expired: #ff4c4c;
-      --font: 'Segoe UI', sans-serif;
-    }
-    body { background-color: var(--bg); color: var(--text); font-family: var(--font); margin:0; padding:0; }
-    nav { background-color: rgba(255,255,255,0.85); display:flex; justify-content:center; gap:40px; padding:15px 0; font-weight:bold; position:sticky; top:0; z-index:10; }
-    nav a { text-decoration:none; color: var(--text); font-size:1.1em; transition: color 0.3s; }
-    nav a:hover { color: var(--accent); }
-    .container { max-width:900px; margin:40px auto; padding:0 20px; }
-    h1,h2 { color: var(--accent); margin-bottom:10px; }
-    form { background-color: var(--card); padding:20px; border-radius:15px; margin-bottom:30px; box-shadow:0 0 20px rgba(0,0,0,0.1); backdrop-filter: blur(8px); }
-    label { display:block; margin-top:15px; }
-    input { width:100%; max-width:400px; padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:5px; background-color: rgba(255,255,255,0.9); color:#000; }
-    button { margin-top:20px; padding:12px 25px; border:none; border-radius:8px; background-color: var(--accent); color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
-    button:hover { background-color:#008ecc; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; background-color: rgba(255,255,255,0.7); border-radius:10px; overflow:hidden; backdrop-filter: blur(8px); }
-    th,td { padding:12px; border-bottom:1px solid #ccc; }
-    th { background-color: rgba(0,0,0,0.05); text-align:left; }
-    tr.expired { background-color: rgba(255,0,0,0.1); color: var(--expired); }
-    .section { background-color: var(--card); padding:20px; border-radius:15px; margin-bottom:40px; box-shadow:0 0 20px rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
-    .delete-btn { background-color: #ff4c4c; border:none; color:white; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold; }
-    .delete-btn:hover { background-color:#e60000; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonnement – Reiselivet</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
+  margin: 0;
+  margin-top: 90px;
+}
+
+/* --- Premium meny --- */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7em 2em;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+nav .logo img { height: 55px; border-radius: 10px; }
+nav ul { list-style: none; display: flex; gap: 2em; margin: 0; padding: 0; }
+nav ul li a {
+  text-decoration: none; color: #fff; font-weight: 600; font-size: 1.1em;
+  transition: color 0.3s, transform 0.3s;
+}
+nav ul li a:hover { color: #D4AF37; transform: translateY(-2px); }
+
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+h1 { color: #0A1F44; }
+</style>
 </head>
 <body>
-  <nav>
-    <a href="https://reiselivet.github.io">Hjem</a>
-    <a href="https://reiselivet.github.io/Report.html">Report</a>
-    <a href="abonnement.html">Abonnement</a>
-  </nav>
 
-  <div class="container">
-    <h1>Abonnementsoversikt</h1>
-
-    <form id="subscriptionForm">
-      <label>Navn:<input type="text" id="name" required></label>
-      <label>Telefon:<input type="tel" id="phone" required></label>
-      <label>Startdato:<input type="date" id="start" required></label>
-      <label>Utløpsdato:<input type="date" id="expiry" required></label>
-      <button type="submit">Legg til abonnement</button>
-    </form>
-
-    <div class="section">
-      <h2>🟢 Aktive abonnementer</h2>
-      <table id="activeTable">
-        <thead>
-          <tr><th>Navn</th><th>Telefon</th><th>Startdato</th><th>Kode</th><th>Utløpsdato</th><th>Handling</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h2>🔴 Utløpte abonnementer</h2>
-      <table id="expiredTable">
-        <thead>
-          <tr><th>Navn</th><th>Telefon</th><th>Startdato</th><th>Kode</th><th>Utløpsdato</th><th>Handling</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+<nav>
+  <div class="logo">
+    <a href="https://reiselivet.github.io">
+      <img src="ChatGPT Image 7. okt. 2025, 01_09_14-2.png" alt="Logo">
+    </a>
   </div>
+  <ul>
+    <li><a href="https://reiselivet.github.io">Hjem</a></li>
+    <li><a href="https://reiselivet.github.io/Report.html">Raport</a></li>
+    <li><a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a></li>
+  </ul>
+</nav>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<main>
+  <h1>Abonnementsoversikt</h1>
+  <p>Administrer dine aktive og utløpte abonnementer.</p>
+</main>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDj3E3reCspPozBwmB8SpvHbSssl9pglMA",
-      authDomain: "reiselivet-8c87d.firebaseapp.com",
-      projectId: "reiselivet-8c87d",
-      storageBucket: "reiselivet-8c87d.firebasestorage.app",
-      messagingSenderId: "801018232313",
-      appId: "1:801018232313:web:fbf3efb6d9e6f0418b5128",
-      measurementId: "G-JTBGXVGWR3"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    const form = document.getElementById('subscriptionForm');
-    const activeTableBody = document.querySelector('#activeTable tbody');
-    const expiredTableBody = document.querySelector('#expiredTable tbody');
-
-    function generateCode() {
-      return 'SUB-' + Math.random().toString(36).substr(2,6).toUpperCase();
-    }
-
-    function renderTables(data) {
-      activeTableBody.innerHTML = '';
-      expiredTableBody.innerHTML = '';
-      const today = new Date().toISOString().split('T')[0];
-
-      Object.keys(data || {}).forEach(key => {
-        const sub = data[key];
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${sub.name}</td>
-          <td>${sub.phone}</td>
-          <td>${sub.start}</td>
-          <td>${sub.code}</td>
-          <td>${sub.expiry}</td>
-          <td><button class="delete-btn" data-key="${key}">Slett</button></td>
-        `;
-        if(sub.expiry < today) expiredTableBody.appendChild(row), row.classList.add('expired');
-        else activeTableBody.appendChild(row);
-      });
-
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          const key = e.target.getAttribute('data-key');
-          db.ref('subscriptions/' + key).remove();
-        });
-      });
-    }
-
-    // Lytt til databasen i sanntid
-    db.ref('subscriptions').on('value', snapshot => {
-      renderTables(snapshot.val());
-    });
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const newSub = {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        start: document.getElementById('start').value,
-        expiry: document.getElementById('expiry').value,
-        code: generateCode()
-      };
-      db.ref('subscriptions').push(newSub);
-      form.reset();
-    });
-  </script>
 </body>
 </html>
