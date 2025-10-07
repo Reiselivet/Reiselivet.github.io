@@ -338,25 +338,14 @@
         });
       });
 
-      // Oppdater stempel og flytt til utløpte hvis stempel = 0
+      // Oppdater stempel (ingen manuell flytting)
       document.querySelectorAll('.update-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
           const input = document.querySelector(`input.stempel-input[data-id="${id}"]`);
           const newStempel = Number(input.value);
-          const row = input.closest('tr');
-          const today = new Date().toISOString().split('T')[0];
 
-          update(ref(db, 'subscriptions/' + id), { stempel: newStempel })
-            .then(() => {
-              if (newStempel === 0) {
-                row.classList.add('expired');
-                expiredTableBody.appendChild(row);
-              } else if (row.classList.contains('expired') && newStempel > 0) {
-                row.classList.remove('expired');
-                activeTableBody.appendChild(row);
-              }
-            });
+          update(ref(db, 'subscriptions/' + id), { stempel: newStempel });
         });
       });
     });
