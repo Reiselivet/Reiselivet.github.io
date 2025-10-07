@@ -22,15 +22,10 @@ nav {
   background: rgba(255,255,255,0.2);
   backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0.7em 2em;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   z-index: 100;
-}
-nav .logo img {
-  height: 55px;
-  border-radius: 10px;
 }
 nav ul {
   list-style: none;
@@ -83,11 +78,6 @@ footer { background: #0A1F44; color: #fff; text-align: center; padding: 30px; }
 <body>
 
 <nav>
-  <div class="logo">
-    <a href="https://reiselivet.github.io">
-      <img src="ChatGPT Image 7. okt. 2025, 01_09_14-2.png" alt="Logo">
-    </a>
-  </div>
   <ul>
     <li><a href="https://reiselivet.github.io">Hjem</a></li>
     <li><a href="https://reiselivet.github.io/Report.html">Raport</a></li>
