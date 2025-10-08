@@ -5,6 +5,7 @@
 <title>Reiselivet</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* === Samme styling som før, med noen små justeringer === */
 body {
   font-family: 'Roboto', sans-serif;
   color: #0A1F44;
@@ -96,7 +97,12 @@ nav a {
   color: #87CEFA;
   text-decoration: none;
   font-weight: 600;
-  font-size: 18px; /* Økt fra 14px til 18px */
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #fff;
 }
 
 /* Header-bilde */
@@ -119,7 +125,6 @@ nav a {
   border-radius: 20px;
 }
 
-/* Tekst over bilde */
 .header-box .overlay-text {
   position: absolute;
   top: 50%;
@@ -133,7 +138,7 @@ nav a {
   text-align: center;
 }
 
-/* === Rulletekst under bildet === */
+/* === Rulletekst === */
 .scrolling-text-container {
   width: 100%;
   overflow: hidden;
@@ -141,7 +146,7 @@ nav a {
   color: #fff;
   padding: 10px 0;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  margin-top: 30px; /* Økt avstand fra bildet */
+  margin-top: 30px;
   margin-bottom: 40px;
 }
 
@@ -159,29 +164,91 @@ nav a {
   100% { transform: translateX(-100%); }
 }
 
-/* Seksjoner */
-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
-.section-title { font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #0A1F44; }
-.section-subtitle { font-size: 1.1rem; text-align: center; margin-bottom: 2rem; color: #555; }
+/* === Seksjoner === */
+section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #0A1F44;
+}
+.section-subtitle {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #555;
+}
 
-/* Bokser */
-.boxes { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-bottom: 60px; }
-.box { background-color: #F7F3F0; padding: 30px; border-radius: 15px; flex: 1 1 250px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s; }
+/* === Bokser === */
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+.box {
+  background-color: #F7F3F0;
+  padding: 30px;
+  border-radius: 15px;
+  flex: 1 1 250px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
 .box:hover { transform: translateY(-5px); }
 .box h3 { margin-bottom: 15px; color: #0A1F44; }
 .box p { color: #555; line-height: 1.6; }
 
-/* Ansattkort */
-.staff-cards { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-.staff-card { background-color: #F7F3F0; border-radius: 10px; padding: 20px; flex: 1 1 200px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+/* === Ansatte === */
+.staff-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.staff-card {
+  background-color: #F7F3F0;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1 1 200px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
+.staff-card:hover { transform: translateY(-4px); }
 .staff-card h3 { margin-bottom: 5px; color: #0A1F44; }
 .staff-card p { color: #555; }
 
-/* Footer */
-footer { background-color: #0A1F44; color: #fff; padding: 40px 20px; text-align: center; }
-footer p { margin-top: 15px; font-size: 0.9rem; }
+/* === Ny seksjon: Om oss === */
+.about {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 40px;
+  margin-top: 40px;
+  text-align: center;
+  line-height: 1.8;
+  color: #333;
+}
 
-/* Responsivt */
+/* === Footer === */
+footer {
+  background-color: #0A1F44;
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+}
+footer p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+/* === Responsivt === */
 @media(max-width: 900px) {
   nav { gap: 15px; }
   nav a { font-size: 16px; }
@@ -203,7 +270,7 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
   </div>
 </div>
 
-<!-- Innhold -->
+<!-- INNHOLD -->
 <div id="content">
   <nav>
     <a href="https://reiselivet.github.io/">Hjem</a>
@@ -212,46 +279,66 @@ footer p { margin-top: 15px; font-size: 0.9rem; }
   </nav>
 
   <div class="header-box">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
-      <div class="overlay-text">Reiselivet</div>
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
+    <div class="overlay-text">Reiselivet</div>
   </div>
 
-  <!-- Rulletekst under bildet -->
   <div class="scrolling-text-container">
     <div class="scrolling-text">
-      Her finner du oversikt over av alt du trenger og vite for deg som ansatt i Reiselivet
+      Her finner du alt du trenger å vite som ansatt i Reiselivet — nyheter, rutiner, kundeservice og mer!
     </div>
   </div>
 
+  <!-- OM OSS -->
+  <section>
+    <h2 class="section-title">Om Reiselivet</h2>
+    <p class="about">
+      Reiselivet er et moderne reisebyrå som spesialiserer seg på luksusreiser til sjøs.
+      Vårt mål er å skape uforglemmelige opplevelser der komfort, trygghet og kvalitet står i sentrum.
+      Vi kombinerer profesjonell service med ekte reiselyst – for både kunder og ansatte.
+      <br><br>
+      Hos oss handler alt om fellesskap, opplevelser og lidenskap for havet 🌊
+    </p>
+  </section>
+
+  <!-- INFOBOKSER -->
   <section id="info-bokser">
-      <div class="boxes">
-          <div class="box">
-              <h3>Kundeservice</h3>
-              <p>Vi legger stor vekt på profesjonell kundebehandling...</p>
-          </div>
-          <div class="box">
-              <h3>Pris ved utreise</h3>
-              <p>15.500 kr per person. Tillegg på 10.000 kr per hode...</p>
-          </div>
-          <div class="box">
-              <h3>Reisen</h3>
-              <p>Vi seiler til Mallorca med yacht, og fokuserer på komfort...</p>
-          </div>
+    <h2 class="section-title">Viktig informasjon</h2>
+    <h3 class="section-subtitle">Her finner du praktisk info for ansatte og reisende</h3>
+
+    <div class="boxes">
+      <div class="box">
+        <h3>Kundeservice</h3>
+        <p>Vi legger stor vekt på profesjonell kundebehandling. 
+        Alle henvendelser skal besvares innen 24 timer, og vi streber etter å gi gjestene en positiv opplevelse fra første kontakt.</p>
       </div>
+      <div class="box">
+        <h3>Pris ved utreise</h3>
+        <p>Standardpris er 15.500 kr per person. Det kan tilkomme tillegg for spesialopplevelser, privatrom eller eksklusive tjenester.</p>
+      </div>
+      <div class="box">
+        <h3>Reisen</h3>
+        <p>Vi seiler til Mallorca med vår toppmoderne yacht, og fokuserer på komfort, sikkerhet og unike opplevelser underveis. 
+        Alle ansatte må møte opp minimum to timer før avgang.</p>
+      </div>
+    </div>
   </section>
 
+  <!-- ANSATTE -->
   <section id="ansatte">
-      <h2 class="section-title">Vårt team</h2>
-      <div class="staff-cards">
-          <div class="staff-card"><h3>Jonathan Pettersen</h3><p>Eier</p></div>
-          <div class="staff-card"><h3>Vidar Holte</h3><p>Lærling</p></div>
-          <div class="staff-card"><h3>Patrick Ryen</h3><p>Lærling</p></div>
-          <div class="staff-card"><h3>Patrik Svensson</h3><p>Lærling</p></div>
-      </div>
+    <h2 class="section-title">Vårt team</h2>
+    <div class="staff-cards">
+      <div class="staff-card"><h3>Jonathan Pettersen</h3><p>Eier & Kaptein</p></div>
+      <div class="staff-card"><h3>Vidar Holte</h3><p>Lærling</p></div>
+      <div class="staff-card"><h3>Patrick Ryen</h3><p>Lærling</p></div>
+      <div class="staff-card"><h3>Patrik Svensson</h3><p>Lærling</p></div>
+    </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-      <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
+    <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
+    <p>Kontakt oss: <a href="mailto:post@reiselivet.no" style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
   </footer>
 </div>
 
@@ -281,6 +368,5 @@ document.onkeydown = function(e) {
   }
 };
 </script>
-
 </body>
 </html>
