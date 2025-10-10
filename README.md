@@ -5,7 +5,7 @@
 <title>Reiselivet</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* === Samme styling som før, med noen små justeringer === */
+/* === Samme styling som før, med små justeringer === */
 body {
   font-family: 'Roboto', sans-serif;
   color: #0A1F44;
@@ -13,19 +13,17 @@ body {
   background: linear-gradient(135deg, #f9f9f9 0%, #e8ebef 100%);
   overflow: hidden;
 }
-/* Blur-effekt når man ikke er logget inn */
 body.blurred #content {
   filter: blur(10px);
   pointer-events: none;
   user-select: none;
 }
+
 /* === Login-overlay === */
 #login-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(8px);
   display: flex;
@@ -41,38 +39,33 @@ body.blurred #content {
   text-align: center;
   width: 300px;
 }
-#login-box h2 {
-  margin-bottom: 20px;
-  color: #0A1F44;
-}
+#login-box h2 { margin-bottom: 20px; color: #0A1F44; }
 #login-box input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-  margin-bottom: 15px;
+  width: 100%; padding: 10px; font-size: 1rem;
+  border-radius: 8px; border: 1px solid #ccc;
+  outline: none; margin-bottom: 15px;
 }
 #login-box button {
-  background-color: #0A1F44;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
+  background-color: #0A1F44; color: white; border: none;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer;
+  font-weight: bold; transition: 0.3s;
 }
-#login-box button:hover {
-  background-color: #122b63;
+#login-box button:hover { background-color: #122b63; }
+#login-error { color: red; font-size: 0.9rem; display: none; margin-top: 10px; }
+
+/* === Logo øverst til venstre === */
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 25px;
+  z-index: 20;
 }
-#login-error {
-  color: red;
-  font-size: 0.9rem;
-  display: none;
-  margin-top: 10px;
+.logo img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
 }
+
 /* === Navigasjonsmeny === */
 nav {
   position: absolute;
@@ -92,10 +85,9 @@ nav a {
   font-size: 18px;
   transition: 0.3s;
 }
-nav a:hover {
-  color: #fff;
-}
-/* Header-bilde */
+nav a:hover { color: #fff; }
+
+/* === Header-bilde === */
 .header-box {
   max-width: 900px;
   height: 400px;
@@ -106,25 +98,13 @@ nav a:hover {
   position: relative;
   transition: transform 0.3s;
 }
-.header-box:hover {
-  transform: translateY(-5px);
-}
+.header-box:hover { transform: translateY(-5px); }
 .header-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
   border-radius: 20px;
 }
-.header-box .overlay-text {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-.header-box .overlay-text img {
-  height: 60px;
-  width: auto;
-}
+
 /* === Rulletekst === */
 .scrolling-text-container {
   width: 100%;
@@ -148,6 +128,7 @@ nav a:hover {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
 /* === Seksjoner === */
 section {
   padding: 60px 20px;
@@ -166,6 +147,7 @@ section {
   margin-bottom: 2rem;
   color: #555;
 }
+
 /* === Bokser === */
 .boxes {
   display: flex;
@@ -186,6 +168,7 @@ section {
 .box:hover { transform: translateY(-5px); }
 .box h3 { margin-bottom: 15px; color: #0A1F44; }
 .box p { color: #555; line-height: 1.6; }
+
 /* === Ansatte === */
 .staff-cards {
   display: flex;
@@ -205,7 +188,8 @@ section {
 .staff-card:hover { transform: translateY(-4px); }
 .staff-card h3 { margin-bottom: 5px; color: #0A1F44; }
 .staff-card p { color: #555; }
-/* === Ny seksjon: Om oss === */
+
+/* === Om oss === */
 .about {
   background-color: #fff;
   border-radius: 15px;
@@ -216,6 +200,7 @@ section {
   line-height: 1.8;
   color: #333;
 }
+
 /* === Footer === */
 footer {
   background-color: #0A1F44;
@@ -227,13 +212,14 @@ footer p {
   margin-top: 15px;
   font-size: 0.9rem;
 }
+
 /* === Responsivt === */
 @media(max-width: 900px) {
   nav { gap: 15px; }
   nav a { font-size: 16px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
-  .header-box .overlay-text img { height: 45px; }
+  .logo img { height: 80px; }
 }
 </style>
 </head>
@@ -251,17 +237,22 @@ footer p {
 
 <!-- INNHOLD -->
 <div id="content">
+
+  <!-- Logo øverst til venstre -->
+  <div class="logo">
+    <img src="https://gyazo.com/c4c36a87d9a5aa1d56c7d0fae6265b58/raw" alt="Reiselivet logo">
+  </div>
+
+  <!-- Navigasjon -->
   <nav>
     <a href="https://reiselivet.github.io/">Hjem</a>
     <a href="https://reiselivet.github.io/Report.html">Report</a>
     <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
   </nav>
 
+  <!-- Header-bilde uten tekst -->
   <div class="header-box">
     <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
-    <div class="overlay-text">
-      <img src="https://gyazo.com/c4c36a87d9a5aa1d56c7d0fae6265b58/raw" alt="Reiselivet logo">
-    </div>
   </div>
 
   <div class="scrolling-text-container">
@@ -315,6 +306,7 @@ footer p {
     <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
     <p>Kontakt oss: <a href="mailto:post@reiselivet.no" style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
   </footer>
+
 </div>
 
 <script>
@@ -330,7 +322,6 @@ document.getElementById('login-btn').addEventListener('click', () => {
     error.style.display = 'block';
   }
 });
-// Forby F12 og høyreklikk
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.onkeydown = function(e) {
   if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || (e.ctrlKey && e.key === "U")) {
@@ -339,5 +330,6 @@ document.onkeydown = function(e) {
   }
 };
 </script>
+
 </body>
 </html>
