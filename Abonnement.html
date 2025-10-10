@@ -5,22 +5,26 @@
   <title>Abonnementsoversikt</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --card: #f5f5f5;
-      --text: #111;
-      --accent: #0078ff;
-      --expired: #ff4c4c;
-      --font: 'Segoe UI', sans-serif;
+      --bg: #f0f2f5;
+      --card: rgba(255, 255, 255, 0.7);
+      --text: #1a1a1a;
+      --accent: #0066ff;
+      --expired: #ff3b30;
+      --font: 'Inter', 'Segoe UI', sans-serif;
     }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      background: linear-gradient(145deg, #eef2f6, #dfe3e8);
       font-family: var(--font);
+      color: var(--text);
       margin: 0;
-      padding: 100px 30px 30px 30px;
+      padding: 100px 20px 60px;
+      min-height: 100vh;
     }
 
+    /* --- Navigasjon --- */
     nav {
       position: fixed;
       top: 0;
@@ -28,51 +32,75 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 40px;
       padding: 18px 0;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0,0,0,0.1);
       z-index: 1000;
+      transition: all 0.3s ease;
     }
 
     nav a {
-      color: var(--accent);
+      color: var(--text);
       text-decoration: none;
       font-weight: 600;
-      padding: 8px 15px;
-      border-radius: 8px;
-      transition: background 0.3s, color 0.3s;
+      padding: 10px 18px;
+      border-radius: 12px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
     }
 
     nav a:hover {
-      background: rgba(0,120,255,0.1);
-      color: #0050aa;
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
     }
 
-    h1, h2 {
+    /* --- Overskrifter og layout --- */
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
       color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
       margin-bottom: 10px;
+      color: var(--text);
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
-    form {
-      background-color: var(--card);
-      padding: 25px;
-      border-radius: 12px;
-      margin-bottom: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border: 1px solid rgba(0,0,0,0.05);
+    /* --- Kort og seksjoner --- */
+    form, .section {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    form:hover, .section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
     }
 
     label {
       display: block;
       margin-top: 15px;
       font-weight: 500;
+      font-size: 0.95rem;
     }
 
     input[type="text"],
@@ -81,116 +109,121 @@
     input[type="number"] {
       width: 100%;
       max-width: 400px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-top: 5px;
-      background-color: #fff;
-      color: #000;
+      padding: 12px 14px;
+      margin-top: 6px;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background-color: rgba(255,255,255,0.9);
+      color: #222;
       outline: none;
-      transition: border-color 0.3s;
+      transition: all 0.25s;
     }
 
     input:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,102,255,0.15);
     }
 
     button {
-      margin-top: 20px;
+      margin-top: 25px;
       padding: 12px 25px;
       border: none;
-      border-radius: 8px;
-      background-color: var(--accent);
+      border-radius: 10px;
+      background: var(--accent);
       color: #fff;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      background-color: #0050aa;
+      background: #004fd6;
       transform: translateY(-2px);
     }
 
+    /* --- Tabeller --- */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-size: 0.95rem;
     }
 
     th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ccc;
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      text-align: left;
     }
 
     th {
-      background-color: #eaeaea;
-      text-align: left;
-      color: #000;
+      background-color: rgba(0,0,0,0.05);
+      font-weight: 600;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: rgba(0,0,0,0.03);
     }
 
     tr.expired {
-      background-color: #ffe8e8;
+      background-color: rgba(255, 59, 48, 0.08);
       color: var(--expired);
+      font-weight: 500;
     }
 
-    .section {
-      background-color: var(--card);
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border: 1px solid rgba(0,0,0,0.05);
+    /* --- Handlinger --- */
+    .delete-btn, .update-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .delete-btn {
-      background-color: #ff4c4c;
+      background-color: var(--expired);
       color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9em;
-      transition: background 0.3s;
     }
 
     .delete-btn:hover {
-      background-color: #cc0000;
+      background-color: #d63027;
     }
 
     .update-btn {
-      background-color: #00b050;
+      background-color: #00c46b;
       color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9em;
-      transition: background 0.3s;
     }
 
     .update-btn:hover {
-      background-color: #007800;
+      background-color: #009a52;
     }
 
     input.stempel-input {
-      width: 60px;
-      padding: 4px 6px;
+      width: 70px;
+      padding: 6px 8px;
       font-size: 0.9em;
       text-align: center;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.2);
     }
 
     @media(max-width: 700px) {
       nav { gap: 20px; font-size: 0.9rem; }
-      form, .section { padding: 15px; }
+      form, .section { padding: 20px; }
+      th, td { font-size: 0.85rem; }
+      h1 { font-size: 1.5rem; }
     }
+
   </style>
 </head>
 <body>
 
   <nav>
     <a href="https://reiselivet.github.io/">Hjem</a>
-    <a href="https://reiselivet.github.io/Report.html">Report</a>
+    <a href="https://reiselivet.github.io/Report.html">Rapporter</a>
     <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
   </nav>
 
@@ -216,7 +249,7 @@
       <label>Stempel (antall):
         <input type="number" id="stempel" name="stempel" min="0" value="0" required>
       </label>
-      <button type="submit">Legg til abonnement</button>
+      <button type="submit">➕ Legg til abonnement</button>
     </form>
 
     <div class="section">
@@ -330,7 +363,6 @@
         }
       });
 
-      // Slett abonnement med kode
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
@@ -345,7 +377,6 @@
         });
       });
 
-      // Oppdater stempel
       document.querySelectorAll('.update-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
