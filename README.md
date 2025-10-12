@@ -52,7 +52,7 @@ body.blurred #content {
 #login-box button:hover { background-color: #122b63; }
 #login-error { color: red; font-size: 0.9rem; display: none; margin-top: 10px; }
 
-/* === Logo (klikkbar) === */
+/* === Logo (klikkbar, mindre størrelse) === */
 .logo {
   position: absolute;
   top: 15px;
@@ -60,7 +60,7 @@ body.blurred #content {
   z-index: 20;
 }
 .logo img {
-  height: 100px;
+  height: 70px; /* redusert fra 100px */
   width: auto;
   object-fit: contain;
   transition: transform 0.3s;
@@ -231,7 +231,7 @@ footer p {
   nav a { font-size: 16px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
-  .logo img { height: 80px; }
+  .logo img { height: 60px; }
   .header-text { font-size: 2rem; }
 }
 </style>
@@ -251,7 +251,7 @@ footer p {
 <!-- INNHOLD -->
 <div id="content">
 
-  <!-- Ny logo med hotlink -->
+  <!-- Ny logo med hotlink (mindre størrelse) -->
   <div class="logo">
     <a href="https://gyazo.com/93c4a1f6414f235f28010b253836c049" target="_blank">
       <img src="https://gyazo.com/93c4a1f6414f235f28010b253836c049/raw" alt="Reiselivet logo">
@@ -320,7 +320,7 @@ footer p {
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
-    <p>Kontakt oss: <a href="mailto:post@reiselivet.no" style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
+    <p>Kontakt oss: <a href= style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
   </footer>
 
 </div>
