@@ -5,7 +5,6 @@
 <title>Reiselivet</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* === Samme styling som før, med små justeringer === */
 body {
   font-family: 'Roboto', sans-serif;
   color: #0A1F44;
@@ -53,7 +52,7 @@ body.blurred #content {
 #login-box button:hover { background-color: #122b63; }
 #login-error { color: red; font-size: 0.9rem; display: none; margin-top: 10px; }
 
-/* === Logo øverst til venstre === */
+/* === Logo (klikkbar) === */
 .logo {
   position: absolute;
   top: 15px;
@@ -64,6 +63,10 @@ body.blurred #content {
   height: 100px;
   width: auto;
   object-fit: contain;
+  transition: transform 0.3s;
+}
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 /* === Navigasjonsmeny === */
@@ -105,6 +108,20 @@ nav a:hover { color: #fff; }
   border-radius: 20px;
 }
 
+/* === Tekst over header-bilde === */
+.header-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  font-family: 'Poppins', sans-serif;
+  z-index: 5;
+}
+
 /* === Rulletekst === */
 .scrolling-text-container {
   width: 100%;
@@ -129,7 +146,7 @@ nav a:hover { color: #fff; }
   100% { transform: translateX(-100%); }
 }
 
-/* === Seksjoner === */
+/* === Seksjoner, bokser, ansatte, footer etc. === */
 section {
   padding: 60px 20px;
   max-width: 1200px;
@@ -147,8 +164,6 @@ section {
   margin-bottom: 2rem;
   color: #555;
 }
-
-/* === Bokser === */
 .boxes {
   display: flex;
   flex-wrap: wrap;
@@ -169,7 +184,6 @@ section {
 .box h3 { margin-bottom: 15px; color: #0A1F44; }
 .box p { color: #555; line-height: 1.6; }
 
-/* === Ansatte === */
 .staff-cards {
   display: flex;
   flex-wrap: wrap;
@@ -189,7 +203,6 @@ section {
 .staff-card h3 { margin-bottom: 5px; color: #0A1F44; }
 .staff-card p { color: #555; }
 
-/* === Om oss === */
 .about {
   background-color: #fff;
   border-radius: 15px;
@@ -201,7 +214,6 @@ section {
   color: #333;
 }
 
-/* === Footer === */
 footer {
   background-color: #0A1F44;
   color: #fff;
@@ -220,6 +232,7 @@ footer p {
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
   .logo img { height: 80px; }
+  .header-text { font-size: 2rem; }
 }
 </style>
 </head>
@@ -238,9 +251,11 @@ footer p {
 <!-- INNHOLD -->
 <div id="content">
 
-  <!-- Logo øverst til venstre -->
+  <!-- Ny logo med hotlink -->
   <div class="logo">
-    <img src="https://gyazo.com/c4c36a87d9a5aa1d56c7d0fae6265b58/raw" alt="Reiselivet logo">
+    <a href="https://gyazo.com/93c4a1f6414f235f28010b253836c049" target="_blank">
+      <img src="https://gyazo.com/93c4a1f6414f235f28010b253836c049/raw" alt="Reiselivet logo">
+    </a>
   </div>
 
   <!-- Navigasjon -->
@@ -250,9 +265,10 @@ footer p {
     <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
   </nav>
 
-  <!-- Header-bilde uten tekst -->
+  <!-- Header-bilde med tekst -->
   <div class="header-box">
     <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
+    <div class="header-text">Reiselivet</div>
   </div>
 
   <div class="scrolling-text-container">
