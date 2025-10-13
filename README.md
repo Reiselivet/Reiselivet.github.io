@@ -53,6 +53,23 @@ body.blurred #content {
 #login-box button:hover { background-color: #122b63; }
 #login-error { color: red; font-size: 0.9rem; display: none; margin-top: 10px; }
 
+/* === Logo (klikkbar, mindre størrelse) === */
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 25px;
+  z-index: 20;
+}
+.logo img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+.logo img:hover {
+  transform: scale(1.05);
+}
+
 /* === Navigasjonsmeny === */
 nav {
   position: absolute;
@@ -215,6 +232,7 @@ footer p {
   nav a { font-size: 16px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
+  .logo img { height: 60px; }
   .header-text { font-size: 2rem; }
 }
 </style>
@@ -234,8 +252,12 @@ footer p {
 <!-- INNHOLD -->
 <div id="content">
 
-  <!-- MERK: logo-div er fjernet for å unngå synlig tekst/fallback -->
-  <!-- <div class="logo"> ... </div>  -->
+  <!-- Logo med tomt alt-attributt (ingen blå tekst) -->
+  <div class="logo">
+    <a href="https://gyazo.com/93c4a1f6414f235f28010b253836c049" target="_blank">
+      <img src="https://gyazo.com/93c4a1f6414f235f28010b253836c049/raw" alt="">
+    </a>
+  </div>
 
   <!-- Navigasjon -->
   <nav>
@@ -244,7 +266,7 @@ footer p {
     <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
   </nav>
 
-  <!-- Header-bilde med (valgfri) tekst -->
+  <!-- Header-bilde med tekst -->
   <div class="header-box">
     <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
     <div class="header-text">Reiselivet</div>
