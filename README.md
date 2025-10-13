@@ -1,7 +1,9 @@
+<!doctype html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reiselivet</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 body {
@@ -50,23 +52,6 @@ body.blurred #content {
 }
 #login-box button:hover { background-color: #122b63; }
 #login-error { color: red; font-size: 0.9rem; display: none; margin-top: 10px; }
-
-/* === Logo (klikkbar, mindre størrelse) === */
-.logo {
-  position: absolute;
-  top: 15px;
-  left: 25px;
-  z-index: 20;
-}
-.logo img {
-  height: 70px; /* redusert fra 100px */
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.3s;
-}
-.logo img:hover {
-  transform: scale(1.05);
-}
 
 /* === Navigasjonsmeny === */
 nav {
@@ -230,7 +215,6 @@ footer p {
   nav a { font-size: 16px; }
   .boxes { flex-direction: column; }
   .header-box { height: 300px; margin-top: 70px; }
-  .logo img { height: 60px; }
   .header-text { font-size: 2rem; }
 }
 </style>
@@ -250,12 +234,8 @@ footer p {
 <!-- INNHOLD -->
 <div id="content">
 
-  <!-- Ny logo med hotlink (mindre størrelse) -->
-  <div class="logo">
-    <a href="https://gyazo.com/93c4a1f6414f235f28010b253836c049" target="_blank">
-      <img src="https://gyazo.com/93c4a1f6414f235f28010b253836c049/raw" alt="Reiselivet logo">
-    </a>
-  </div>
+  <!-- MERK: logo-div er fjernet for å unngå synlig tekst/fallback -->
+  <!-- <div class="logo"> ... </div>  -->
 
   <!-- Navigasjon -->
   <nav>
@@ -264,7 +244,7 @@ footer p {
     <a href="https://reiselivet.github.io/Abonnement.html">Abonnement</a>
   </nav>
 
-  <!-- Header-bilde med tekst -->
+  <!-- Header-bilde med (valgfri) tekst -->
   <div class="header-box">
     <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80" alt="Yacht">
     <div class="header-text">Reiselivet</div>
@@ -319,7 +299,7 @@ footer p {
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Reiselivet. Alle rettigheter reservert.</p>
-    <p>Kontakt oss: <a href= style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
+    <p>Kontakt oss: <a href="mailto:post@reiselivet.no" style="color:#87CEFA; text-decoration:none;">post@reiselivet.no</a></p>
   </footer>
 
 </div>
